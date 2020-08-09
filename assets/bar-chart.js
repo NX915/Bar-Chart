@@ -2,7 +2,7 @@ function drawAxis(element) {
   $('<div id="barchart_vertical_line"></div>').appendTo(element);
   $('#barchart_vertical_line').css({
     'width': '3px',
-    'height': '200px',
+    'height': '100%',
     'backgroundColor': 'black',
     'position': 'fixed',
   });
@@ -22,14 +22,14 @@ function drawBars(data, option, element) {
     if (data[i] > scale) {
       scale = data[i];
     }
-  }
+  }//find max
   scale = maxH / scale;
   for (let i = 0; i < data.length; i++) {
     $(('<div id="bar_' + i + '"></div>')).appendTo(element);
     $(('#bar_' + i)).css({
       'flex': '0 0 calc(100% / 6)',
       'height': (data[i] * scale) +'px',
-      'backgroundColor': 'red',
+      'backgroundColor': option.barColor[i],
     });
   }
 }
@@ -45,16 +45,16 @@ function drawBarChart(data, option, element) {
   $('<div id="barchart"></div>').appendTo(element);
   $('#barchart').css({
     'width': 'calc(100% - 60px)',
-    'height': '100%',
+    'height': 'calc(100% - 60px)',
     'position': 'relative',
-    'top': '-30px',
+    'top': '30px',
     'left': '40px',
     'transform': 'rotateX(180deg)',
   });
   $('<div id="bar_container"></div>').appendTo('#barchart');
   $('#bar_container').css({
     'width': '100%',
-    'height': '200px',
+    'height': '100%',
     'backgroundColor': 'green',
     'display': 'flex',
     'flex-flow': 'row',
@@ -66,4 +66,6 @@ function drawBarChart(data, option, element) {
   drawAxis('#barchart');
 }
 
-$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5],0,'#demo')});
+$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5], {
+  barColor: ['red', 'yellow', 'blue', 'orange', 'white']
+},'#demo')});
