@@ -1,11 +1,25 @@
-function drawAxis(element) {
+function drawAxis(option, element) {
   $('<div id="barchart_vertical_line"></div>').appendTo(element);
   $('#barchart_vertical_line').css({
     'width': '3px',
     'height': '100%',
     'backgroundColor': 'black',
     'position': 'fixed',
+    'display':'flex',
+    'flex-direction': 'column',
+    'justify-content': 'center',
+    'align-items': 'center',
   });
+  $('<div id="y_label">' + option.yLabel + '</div>').appendTo('#barchart_vertical_line');
+  $('#y_label').css({
+    //'backgroundColor': 'pink',
+    'text-align': 'center',
+    'width': $(element).css('height'),
+    'height': '30%',
+    'transform': 'rotateX(-180deg) rotate(-90deg)',
+    'color': 'black',
+  });
+
   $('<div id="barchart_horizontal_line"></div>').appendTo(element);
   $('#barchart_horizontal_line').css({
     'width': '100%',
@@ -63,9 +77,11 @@ function drawBarChart(data, option, element) {
     'position': 'fixed',
   });
   drawBars(data,option, '#bar_container');
-  drawAxis('#barchart');
+  drawAxis(option,'#barchart');
 }
 
 $(document).ready(function () {drawBarChart([1, 2, 7, 4, 5], {
-  barColor: ['red', 'yellow', 'blue', 'orange', 'white']
+  barColor: ['red', 'yellow', 'blue', 'orange', 'white'],
+  xLabel: 'Countries',
+  yLabel: 'Covid Cases',
 },'#demo')});
