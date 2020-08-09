@@ -1,4 +1,14 @@
-function drawAxis(option, element) {
+function findMax(data) {
+  let max = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i] > max) {
+      max = data[i];
+    }
+  }
+  return max;
+}
+
+function drawAxis(data, option, element) {
   $('<div id="barchart_axis_container"></div>').appendTo(element);
   $('#barchart_axis_container').css({
     'width': '100%',
@@ -8,7 +18,10 @@ function drawAxis(option, element) {
     'justify-content': 'center',
     'align-items': 'flex-end',
     'transform': 'translate(0, -100%)',
+    // 'padding': '0px',
   });
+
+
   $('<div id="barchart_y_axis"></div>').appendTo('#barchart_axis_container');
   $('#barchart_y_axis').css({
     'width': '3px',
@@ -49,30 +62,30 @@ function drawAxis(option, element) {
 }
 
 function drawBars(data, option, element) {
-  let scale = 0, maxH;
+  let scale, color = 'pink', spacing = data.length;
   $('<div id="bar_container"></div>').appendTo(element);
   $('#bar_container').css({
     'width': '100%',
-    'height': '100%',
+    'height': '90%',
     // 'backgroundColor': 'green',
     'display': 'flex',
     'flex-flow': 'row',
     'align-items': 'flex-end',
     'justify-content': 'space-evenly',
   });
+  scale = parseInt($('#bar_container').css('height')) / findMax(data);
+  if (option.barSpacing !== undefined) {
+    spacing = data.length + option.barSpacing;
+  }
   for (let i = 0; i < data.length; i++) {
-    if (data[i] > scale) {
-      scale = data[i];
+    if (option.barColor !== undefined && option.barColor[i] !== undefined) {
+      color = option.barColor[i];
     }
-  }//find max
-  maxH = parseInt($('#bar_container').css('height'))
-  scale = maxH / scale;
-  for (let i = 0; i < data.length; i++) {
     $(('<div id="bar_' + i + '"></div>')).appendTo('#bar_container');
     $(('#bar_' + i)).css({
-      'flex': '0 0 calc(100% / 6)',
+      'flex': '0 0 calc(100% / ' + spacing + ')',
       'height': (data[i] * scale) +'px',
-      'backgroundColor': option.barColor[i],
+      'backgroundColor': color,
     });
   }
 }
@@ -80,39 +93,42 @@ function drawBars(data, option, element) {
 function drawBarChart(data, option, element) {
   $(element).css({
     'width': 'auto',
-    'height': '300px',
+    'height': '325px',
     'backgroundColor': 'grey',
     'display': 'flex',
     'flex-direction': 'column',
-    'justify-content': 'center',
+    'justify-content': 'flex-start',
     'align-items': 'center',
     }
   );
   $('<h1 id="barchart_title">' + option.title + '</h1>').appendTo(element);
   $('#barchart_title').css({
-    'backgroundColor': 'pink',
+    // 'backgroundColor': 'pink',
     'flex': '0 0 10%',
     'text-align': 'center',
     'font-size': '25px',
-    'margin': '0px',
+    'margin': '0.5em',
+    'margin-bottom': '1em',
   });
   $('<div id="barchart"></div>').appendTo(element);
   $('#barchart').css({
-    'backgroundColor': 'cyan',
-    'width': 'calc(90%)',
-    'height': 'calc(75%)',
+    // 'backgroundColor': 'cyan',
+    'width': '90%',
+    'height': '80%',
+    // 'margin': '0.5em',
     // 'top': '30px',
     // 'left': '30px',
     // 'flex': '1 1 100px',
     // 'transform': 'scale(1)',
   });
-  drawBars(data,option, '#barchart');
-  drawAxis(option,'#barchart');
+  drawBars(data, option, '#barchart');
+  drawAxis(data, option, '#barchart');
 }
 
-$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5], {
-  barColor: ['red', 'yellow', 'blue', 'orange', 'white'],
+$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5, 10], {
+  barColor: ['red', 'yellow', 'blue', 'orange', 'green'],
   title: 'Number of Covid Cases Per Country',
+  barSpacing: 2,
   xLabel: 'Countries',
   yLabel: 'Covid Cases',
 },'#demo')});
