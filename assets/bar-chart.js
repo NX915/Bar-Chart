@@ -15,17 +15,27 @@ function drawAxis(option, element) {
     //'backgroundColor': 'pink',
     'text-align': 'center',
     'width': $(element).css('height'),
-    'height': '30%',
+    'height': '3em',
     'transform': 'rotateX(-180deg) rotate(-90deg)',
     'color': 'black',
   });
-
   $('<div id="barchart_horizontal_line"></div>').appendTo(element);
   $('#barchart_horizontal_line').css({
     'width': '100%',
     'height': '3px',
     'backgroundColor': 'black',
     'position': 'fixed',
+    'display':'flex',
+    'flex-direction': 'row',
+    'transform': 'rotateX(-180deg)',
+  });
+  $('<div id="x_label">' + option.xLabel + '</div>').appendTo('#barchart_horizontal_line');
+  $('#x_label').css({
+    // 'backgroundColor': 'pink',
+    'text-align': 'center',
+    'width': '100%',
+    'padding-top': '0.5em',
+    'color': 'black',
   });
 }
 
@@ -51,7 +61,7 @@ function drawBars(data, option, element) {
 function drawBarChart(data, option, element) {
   $(element).css({
     'width': 'auto',
-    'height': '250px',
+    'height': '200px',
     'backgroundColor': 'grey',
     'display': 'block',
     }
@@ -62,7 +72,7 @@ function drawBarChart(data, option, element) {
     'height': 'calc(100% - 60px)',
     'position': 'relative',
     'top': '30px',
-    'left': '40px',
+    'left': '30px',
     'transform': 'rotateX(180deg)',
   });
   $('<div id="bar_container"></div>').appendTo('#barchart');
