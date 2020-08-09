@@ -8,29 +8,61 @@ function findMax(data) {
   return max;
 }
 
+function drawBarCanvas(data, option, element) {
+  let interval = 1;
+  let count;
+  if (typeof option.tickInterval === 'number') {
+    interval = option.tickInterval;
+  }
+  count = Math.ceil((findMax(data) / interval));
+  $('<div id="barchart_ticks_container"></div>').appendTo(element);
+  $('#barchart_ticks_container').css({
+    'width': '100%',
+    'height': '100%',
+    // 'backgroundColor': 'pink',
+    'display':'flex',
+    'flex-direction': 'column',
+    'justify-content': 'flex-end',
+    // 'align-items': 'flex-end',
+    // 'transform': 'translate(0, -100%)',
+    // 'padding': '0px',
+  });
+  for (let i = 0; i < count; i++) {
+    $('<div id="tick_' + i + '"></div>').appendTo('#barchart_ticks_container');
+    $('#tick_' + i).css({
+      'width': '100%',
+      'height': parseInt($('#barchart_ticks_container').css('height')) / count + 'px',
+      'backgroundColor': 'white',
+      'border-top': 'thin dashed black',
+      'z-index': '0',
+    });
+  }
+  drawBars(data, option, '#barchart', interval, count);
+}
+
 function drawAxis(data, option, element) {
   $('<div id="barchart_axis_container"></div>').appendTo(element);
   $('#barchart_axis_container').css({
     'width': '100%',
     'height': '100%',
-    'display':'flex',
-    'flex-direction': 'row',
-    'justify-content': 'center',
-    'align-items': 'flex-end',
+    // 'display':'flex',
+    // 'flex-direction': 'row',
+    // 'justify-content': 'center',
+    // 'align-items': 'flex-end',
     'transform': 'translate(0, -100%)',
     // 'padding': '0px',
   });
-
-
   $('<div id="barchart_y_axis"></div>').appendTo('#barchart_axis_container');
   $('#barchart_y_axis').css({
     'width': '3px',
-    'height': '100%',
+    'height': $(element).css('height'),
     'backgroundColor': 'black',
+    'position': 'absolute',
     'display':'flex',
     'flex-direction': 'column',
     'justify-content': 'center',
     'align-items': 'center',
+    'transform': 'translate(0, -100%)',
   });
   $('<div id="y_label">' + option.yLabel + '</div>').appendTo('#barchart_y_axis');
   $('#y_label').css({
@@ -49,6 +81,8 @@ function drawAxis(data, option, element) {
     'backgroundColor': 'black',
     'display':'flex',
     'flex-direction': 'row',
+    // 'transform': 'translate(0, -100%)',
+    'z-index': '2',
   });
   $('<div id="x_label">' + option.xLabel + '</div>').appendTo('#barchart_x_axis');
   $('#x_label').css({
@@ -61,19 +95,20 @@ function drawAxis(data, option, element) {
   });
 }
 
-function drawBars(data, option, element) {
+function drawBars(data, option, element, interval, count) {
   let scale, color = 'pink', spacing = data.length;
   $('<div id="bar_container"></div>').appendTo(element);
   $('#bar_container').css({
     'width': '100%',
-    'height': '90%',
+    'height': '100%',
     // 'backgroundColor': 'green',
     'display': 'flex',
     'flex-flow': 'row',
     'align-items': 'flex-end',
     'justify-content': 'space-evenly',
+    'transform': 'translate(0, -100%)',
   });
-  scale = parseInt($('#bar_container').css('height')) / findMax(data);
+  scale = parseInt($('#bar_container').css('height')) / count/ interval;
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
   }
@@ -86,6 +121,7 @@ function drawBars(data, option, element) {
       'flex': '0 0 calc(100% / ' + spacing + ')',
       'height': (data[i] * scale) +'px',
       'backgroundColor': color,
+      'z-index': '1',
     });
   }
 }
@@ -114,21 +150,23 @@ function drawBarChart(data, option, element) {
   $('#barchart').css({
     // 'backgroundColor': 'cyan',
     'width': '90%',
-    'height': '80%',
+    'height': '70%',
     // 'margin': '0.5em',
     // 'top': '30px',
     // 'left': '30px',
     // 'flex': '1 1 100px',
     // 'transform': 'scale(1)',
   });
-  drawBars(data, option, '#barchart');
+  drawBarCanvas(data, option, '#barchart');
+  // drawBars(data, option, '#barchart');
   drawAxis(data, option, '#barchart');
 }
 
-$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5, 10], {
+$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5, 12], {
   barColor: ['red', 'yellow', 'blue', 'orange', 'green'],
   title: 'Number of Covid Cases Per Country',
-  barSpacing: 2,
+  barSpacing: 4,
   xLabel: 'Countries',
   yLabel: 'Covid Cases',
+  tickInterval: 1,
 },'#demo')});
