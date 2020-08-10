@@ -166,34 +166,55 @@ function drawBars(data, option, element, interval, count) {
         'height': '100%',
         'position': 'absolute',
       });
+      $('<div id="bar_' + i + '_stat">' + data[i] + '</div>').appendTo('#bar_' + i + '_label_container');
+      $('#bar_' + i + '_stat').css({
+        'width': '100%',
+        // 'font-size': '30px',
+        'text-align': 'center',
+        'position': 'absolute',
+      });
       $('<div id="bar_' + i + '_label">' + option.barLabel[i] + '</div>').appendTo('#bar_' + i + '_label_container');
       $('#bar_' + i + '_label').css({
         'width': '100%',
         // 'font-size': '30px',
         'text-align': 'center',
+        'position': 'absolute',
       });
-      if  (option.barLabelPosition !== undefined) {
-        switch (option.barLabelPosition) {
-        case 'top':
-          $('#bar_' + i + '_label').css({
-            'transform': 'translate(0, -1em)',
-          });
-          break;
-        case 'center':
-          $('#bar_' + i + '_label').css({
-            'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
-          });
-          break;
-        case 'bottom':
-          $('#bar_' + i + '_label').css({
-            'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
-          });
-          break;
-        }
-      } else {
+
+      switch (option.barStatPosition) {
+      case 'bottom':
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+        });
+        break;
+      case 'center':
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+        });
+        break;
+      default:
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, -1em)',
+        });
+        break;
+      }
+
+      switch (option.barLabelPosition) {
+      case 'top':
+        $('#bar_' + i + '_label').css({
+          'transform': 'translate(0, -1em)',
+        });
+        break;
+      case 'center':
+        $('#bar_' + i + '_label').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+        });
+        break;
+      default:
         $('#bar_' + i + '_label').css({
           'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
         });
+        break;
       }
     }
   }
@@ -233,7 +254,8 @@ function drawBarChart(data, option, element) {
 $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barColor: ['red', 'yellow', 'blue', 'orange', 'green', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
-  barLabelPosition: 'top',
+  // barLabelPosition: 'center',
+  // barStatPosition: 'bottom',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
   xLabel: 'Provience',
