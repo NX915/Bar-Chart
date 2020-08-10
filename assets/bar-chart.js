@@ -29,8 +29,6 @@ function drawBarCanvas(data, option, element) {
     'justify-content': 'flex-end',
     'position': 'absolute',
     // 'align-items': 'flex-end',
-    // 'transform': 'translate(0, -100%)',
-    // 'padding': '0px',
   });
   $('<div id="barchart_ticks_label_container"></div>').appendTo(element);
   $('#barchart_ticks_label_container').css({
@@ -91,7 +89,7 @@ function drawAxis(data, option, element) {
   });
   $('<div id="barchart_y_axis"></div>').appendTo('#barchart_axis_container');
   $('#barchart_y_axis').css({
-    'width': '3px',
+    'width': '0px',
     'height': $(element).css('height'),
     'backgroundColor': 'black',
     'position': 'absolute',
@@ -99,6 +97,7 @@ function drawAxis(data, option, element) {
     'flex-direction': 'column',
     'justify-content': 'center',
     'align-items': 'center',
+    'border-left': 'solid black',
   });
   $('<div id="y_label">' + yLabel + '</div>').appendTo('#barchart_y_axis');
   $('#y_label').css({
@@ -106,18 +105,18 @@ function drawAxis(data, option, element) {
     // 'font-size': '25px',
     'text-align': 'center',
     'width': $('#barchart_y_axis').css('height'),
-    'height': '1em',
-    'transform': 'rotate(-90deg) translate(0px, -2.7em)',
+    'height': '8em',
+    'transform': 'rotate(-90deg)',
     'color': 'black',
   });
   $('<div id="barchart_x_axis"></div>').appendTo('#barchart_axis_container');
   $('#barchart_x_axis').css({
     'width': '100%',
-    'height': '3px',
-    'backgroundColor': 'black',
+    'height': '1%',
+    // 'backgroundColor': 'black',
+    'border-bottom': 'solid black',
     'display':'flex',
     'flex-direction': 'row',
-    // 'transform': 'translate(0, -100%)',
     'z-index': '2',
   });
   $('<div id="x_label">' + xLabel + '</div>').appendTo('#barchart_x_axis');
@@ -125,8 +124,7 @@ function drawAxis(data, option, element) {
     // 'backgroundColor': 'pink',
     'text-align': 'center',
     'width': '100%',
-    'height': '1em',
-    'transform': 'translate(0px, 1em)',
+    'transform': 'translate(0px, 1.5em)',
     'color': 'black',
   });
 }
@@ -159,15 +157,52 @@ function drawBars(data, option, element, interval, count) {
       'height': (data[i] * scale) +'px',
       'backgroundColor': color,
       'z-index': '1',
+      'position': 'relative',
     });
-
+    if (option.barLabel !== undefined && option.barLabel[i] !== undefined) {
+      $('<div id="bar_' + i + '_label_container"></div>').appendTo('#bar_' + i)
+      $('#bar_' + i + '_label_container').css({
+        'width': '100%',
+        'height': '100%',
+        'position': 'absolute',
+      });
+      $('<div id="bar_' + i + '_label">' + option.barLabel[i] + '</div>').appendTo('#bar_' + i + '_label_container');
+      $('#bar_' + i + '_label').css({
+        'width': '100%',
+        // 'font-size': '30px',
+        'text-align': 'center',
+      });
+      if  (option.barLabelPosition !== undefined) {
+        switch (option.barLabelPosition) {
+        case 'top':
+          $('#bar_' + i + '_label').css({
+            'transform': 'translate(0, -1em)',
+          });
+          break;
+        case 'center':
+          $('#bar_' + i + '_label').css({
+            'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+          });
+          break;
+        case 'bottom':
+          $('#bar_' + i + '_label').css({
+            'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+          });
+          break;
+        }
+      } else {
+        $('#bar_' + i + '_label').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+        });
+      }
+    }
   }
 }
 
 function drawBarChart(data, option, element) {
   $(element).css({
     'width': 'auto',
-    'height': '325px',
+    'height': '500px',
     'backgroundColor': 'grey',
     'display': 'flex',
     'flex-direction': 'column',
@@ -191,22 +226,18 @@ function drawBarChart(data, option, element) {
     'height': '65%',
     'box-sizing': 'border-box',
     'position': 'relative',//needed for the absolute positioned child
-    // 'display': 'block',
-    // 'margin': '0.5em',
-    // 'top': '30px',
-    // 'left': '30px',
-    // 'flex': '1 1 100px',
-    // 'transform': 'scale(1)',
   });
   drawBarCanvas(data, option, '#barchart');
 }
 
-$(document).ready(function () {drawBarChart([1, 2, 7, 4, 5, 12, 24], {
-  barColor: ['red', 'yellow', 'blue', 'orange', 'green'],
-  title: 'Number of Covid Cases Per Country',
+$(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
+  barColor: ['red', 'yellow', 'blue', 'orange', 'green', 'purple'],
+  barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
+  barLabelPosition: 'top',
+  title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
-  xLabel: 'Countries',
+  xLabel: 'Provience',
   yLabel: 'Covid Cases',
-  tickInterval: 10,
+  tickInterval: 10000,
   // chartHeight: 30,
 },'#demo')});
