@@ -9,10 +9,17 @@ function findMax(data) {
 }
 
 function drawBarCanvas(data, option, element) {
-  let interval = 1;
+  let interval;
   let count;
   if (typeof option.tickInterval === 'number') {
     interval = option.tickInterval;
+  } else {
+    let i = 1, max = findMax(data);
+    do {
+      max /= i;
+      i *= 10;
+    } while (max >= 10);
+    interval = i;
   }
   if (typeof option.chartHeight === 'number') {
     count = Math.ceil(option.chartHeight / interval);
@@ -284,13 +291,13 @@ $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
   // barLabelPosition: 'top',
-  // barStatPosition: 'top',
+  // barStatPosition: 'center',
   // barLabelColor: 'bar',
   // barStatColor: '#ff1430',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
   xLabel: 'Provience',
   yLabel: 'Covid Cases',
-  tickInterval: 10000,
+  // tickInterval: 5000,
   // chartHeight: 30,
 },'#demo')});
