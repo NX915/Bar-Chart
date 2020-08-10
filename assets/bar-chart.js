@@ -15,6 +15,7 @@ function findInterval(data) {
   }
   return parseInt(interval);
 }
+
 function drawBarCanvas(data, option, element, barchartId) {
   let interval;
   let count;
@@ -261,9 +262,16 @@ function drawBars(data, option, element,barchartId, interval, count) {
 
 function drawBarChart(data, option, element) {
   let barchartId = 'barchart_'+ Math.ceil(Math.random() * 1000);
+  let width = 'auto', height = '400px';
+  if (option.barchartWidth !== undefined) {
+    width = option.barchartWidth;
+  }
+  if (option.barchartHeight !== undefined) {
+    height = option.barchartHeight;
+  }
   $(element).css({
-    'width': 'auto',
-    'height': '400px',
+    'width': width,
+    'height': height,
     'backgroundColor': 'grey',
     'display': 'flex',
     'flex-direction': 'column',
@@ -294,6 +302,8 @@ function drawBarChart(data, option, element) {
 $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
+  barchartWidth: 'auto',
+  barchartHeight: '600px',
   // barLabelPosition: 'top',
   // barStatPosition: 'center',
   // barLabelColor: 'bar',
@@ -304,12 +314,12 @@ $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   yLabel: 'Covid Cases',
   // tickInterval: 5000,
   // chartHeight: 30,
-},'#demo')});
+},'#demo2')});
 $(document).ready(function () {drawBarChart([1, 2, 3, 4, 5, 6, 7, 8, 9, 11], {
   // barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['one', 'two', 'three', 'four'],
   // barLabelPosition: 'top',
-  // barStatPosition: 'center',
+  barStatPosition: 'none',
   // barLabelColor: 'bar',
   // barStatColor: '#ff1430',
   title: 'Numbers',
@@ -318,4 +328,4 @@ $(document).ready(function () {drawBarChart([1, 2, 3, 4, 5, 6, 7, 8, 9, 11], {
   yLabel: 'Y label',
   // tickInterval: 2,
   // chartHeight: 30,
-},'#demo2')});
+},'#demo')});
