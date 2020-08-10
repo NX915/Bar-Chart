@@ -130,7 +130,7 @@ function drawAxis(data, option, element) {
 }
 
 function drawBars(data, option, element, interval, count) {
-  let scale, color = 'pink', spacing = data.length;
+  let scale, color = 'pink', colorLabel = 'black', colorStat = 'black', spacing = data.length;
   $('<div id="bar_container"></div>').appendTo(element);
   $('#bar_container').css({
     'width': '100%',
@@ -159,20 +159,13 @@ function drawBars(data, option, element, interval, count) {
       'z-index': '1',
       'position': 'relative',
     });
+    $('<div id="bar_' + i + '_label_container"></div>').appendTo('#bar_' + i)
+    $('#bar_' + i + '_label_container').css({
+      'width': '100%',
+      'height': '100%',
+      'position': 'absolute',
+    });
     if (option.barLabel !== undefined && option.barLabel[i] !== undefined) {
-      $('<div id="bar_' + i + '_label_container"></div>').appendTo('#bar_' + i)
-      $('#bar_' + i + '_label_container').css({
-        'width': '100%',
-        'height': '100%',
-        'position': 'absolute',
-      });
-      $('<div id="bar_' + i + '_stat">' + data[i] + '</div>').appendTo('#bar_' + i + '_label_container');
-      $('#bar_' + i + '_stat').css({
-        'width': '100%',
-        // 'font-size': '30px',
-        'text-align': 'center',
-        'position': 'absolute',
-      });
       $('<div id="bar_' + i + '_label">' + option.barLabel[i] + '</div>').appendTo('#bar_' + i + '_label_container');
       $('#bar_' + i + '_label').css({
         'width': '100%',
@@ -180,24 +173,20 @@ function drawBars(data, option, element, interval, count) {
         'text-align': 'center',
         'position': 'absolute',
       });
-
-      switch (option.barStatPosition) {
-      case 'bottom':
-        $('#bar_' + i + '_stat').css({
-          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
-        });
+      switch (option.barLabelColor) {
+      case '':
+      case undefined:
         break;
-      case 'center':
-        $('#bar_' + i + '_stat').css({
-          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
-        });
+      case 'bar':
+        colorLabel = color;
         break;
       default:
-        $('#bar_' + i + '_stat').css({
-          'transform': 'translate(0, -1em)',
-        });
+        colorLabel = option.barLabelColor;
         break;
       }
+      $('#bar_' + i + '_label').css({
+        'color': colorLabel,
+      });
 
       switch (option.barLabelPosition) {
       case 'top':
@@ -217,13 +206,53 @@ function drawBars(data, option, element, interval, count) {
         break;
       }
     }
+    if (option.barStatPosition !== 'none') {
+      $('<div id="bar_' + i + '_stat">' + data[i] + '</div>').appendTo('#bar_' + i + '_label_container');
+      $('#bar_' + i + '_stat').css({
+        'width': '100%',
+        // 'font-size': '30px',
+        'text-align': 'center',
+        'position': 'absolute',
+      });
+      switch (option.barStatColor) {
+      case '':
+      case undefined:
+        break;
+      case 'bar':
+        colorStat = color;
+        break;
+      default:
+        colorStat = option.barStatColor;
+        break;
+      }
+      $('#bar_' + i + '_stat').css({
+        'color': colorStat,
+      });
+      switch (option.barStatPosition) {
+      case 'bottom':
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+        });
+        break;
+      case 'center':
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+        });
+        break;
+      default:
+        $('#bar_' + i + '_stat').css({
+          'transform': 'translate(0, -1em)',
+        });
+        break;
+      }
+    }
   }
 }
 
 function drawBarChart(data, option, element) {
   $(element).css({
     'width': 'auto',
-    'height': '500px',
+    'height': '400px',
     'backgroundColor': 'grey',
     'display': 'flex',
     'flex-direction': 'column',
@@ -244,7 +273,7 @@ function drawBarChart(data, option, element) {
   $('#barchart').css({
     'backgroundColor': 'cyan',
     'width': '80%',
-    'height': '65%',
+    'height': '70%',
     'box-sizing': 'border-box',
     'position': 'relative',//needed for the absolute positioned child
   });
@@ -252,10 +281,12 @@ function drawBarChart(data, option, element) {
 }
 
 $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
-  barColor: ['red', 'yellow', 'blue', 'orange', 'green', 'purple'],
+  barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
-  // barLabelPosition: 'center',
-  // barStatPosition: 'bottom',
+  // barLabelPosition: 'top',
+  // barStatPosition: 'top',
+  // barLabelColor: 'bar',
+  // barStatColor: '#ff1430',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
   xLabel: 'Provience',
