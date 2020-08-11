@@ -315,6 +315,7 @@ function drawBarCanvas(data, option, element) {
 function drawBarChart(data, option, element) {
   let barchartId = 'barchart_'+ Math.ceil(Math.random() * 10000);
   let width = '80%', height = '70%';
+  let titleId;
   if (option.barchartWidth !== undefined) {
     width = option.barchartWidth;
   }
@@ -329,15 +330,17 @@ function drawBarChart(data, option, element) {
     }
   );
 
-  drawDiv(barchartId + '_title', element, {
+  titleId = drawDiv(barchartId + '_title', element, {
     // 'backgroundColor': 'pink',
     'flex': '0 0 10%',
     'text-align': 'center',
     'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
     'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: 'black',
-    'margin': '0.5em',
-    'margin-bottom': '0em',
+    'margin-bottom': '0.5em',
   }, option.title);
+  if (option.barchartTitleCss !== undefined){
+    $(titleId).css(option.barchartTitleCss);
+  }
 
   drawDiv(barchartId, element, {
     // 'backgroundColor': 'cyan',
@@ -366,13 +369,14 @@ $(document).ready(function () {drawBarChart([2, 3, 4, 5, 6, 7, 8, 9], {
 },'#demo')});
 $(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
   barColor: ['yellow', 'blue', 'red', 'green', 'blue', 'purple'],
-  barchartTitleSize: '100px',
+  barchartTitleSize: '60px',
   barchartTitleColor: 'darkgrey',
+  // barchartTitleCss: {'font-family': 'Arial, Helvetica, sans-serif'},
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
   // barchartWidth: 'auto',
   // barchartHeight: '600px',
   // barLabelPosition: 'top',
-  barStatPosition: 'center',
+  barStatPosition: 'none',
   barLabelColor: 'black',
   barStatColor: ['purple', 'orange', 'green'],
   title: 'Number of Covid Cases Per Provience',
