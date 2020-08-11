@@ -1,8 +1,13 @@
 function findMax(data) {
-  let max = 0;
+  let max = 0, ele;
   for (let i = 0; i < data.length; i++) {
-    if (data[i] > max) {
-      max = data[i];
+    if (typeof data[i] !== 'number') {
+      ele = data[i].reduce((acc, cur) => acc + cur);
+    } else {
+      ele = data[i];
+    }
+    if (ele > max) {
+      max = ele;
     }
   }
   return max;
@@ -15,131 +20,6 @@ function findInterval(data) {
   }
   return parseInt(interval);
 }
-
-function drawBarCanvas(data, option, element, barchartId) {
-  let interval;
-  let count;
-  if (typeof option.tickInterval === 'number') {
-    interval = option.tickInterval;
-  } else {
-    interval = findInterval(data);
-  }
-  console.log(interval);
-  if (typeof option.chartHeight === 'number') {
-    count = Math.ceil(option.chartHeight / interval);
-  } else {
-    count = Math.ceil(findMax(data) / interval);
-  }
-  $('<div id="' + barchartId + '_ticks_container"></div>').appendTo(element);
-  $('#' + barchartId + '_ticks_container').css({
-    'width': '100%',
-    'height': '100%',
-    // 'backgroundColor': 'pink',
-    'display':'flex',
-    'flex-direction': 'column-reverse',
-    'justify-content': 'flex-end',
-    'position': 'absolute',
-    // 'align-items': 'flex-end',
-  });
-  $('<div id="' + barchartId + '_ticks_label_container"></div>').appendTo(element);
-  $('#' + barchartId + '_ticks_label_container').css({
-    'width': '3em',
-    'height': '100%',
-    // 'backgroundColor': 'pink',
-    'position': 'absolute',
-    'display':'flex',
-    'flex-direction': 'column-reverse',
-    'justify-content': 'flex-end',
-    // 'align-items': 'flex-end',
-    'transform': 'translate(-3.5em)',
-    // 'padding': '0px',
-  });
-  for (let i = 0; i < count; i++) {
-    $('<div id="' + barchartId + 'tick_' + i + '"></div>').appendTo('#' + barchartId + '_ticks_container');
-    $('#' + barchartId + 'tick_' + i).css({
-      'width': '100%',
-      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
-      'backgroundColor': 'white',
-      'border-top': 'thin dashed black',
-      'display':'flex',
-      'justify-content': 'flex-end',
-      'z-index': '0',
-    });
-    $('<div id="' + barchartId + 'tick_label_' + i + '">' + interval * (i + 1) + '</div>').appendTo('#' + barchartId + '_ticks_label_container');
-    $('#' + barchartId + 'tick_label_' + i).css({
-      'font-size': '12px',
-      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
-      // 'backgroundColor': 'pink',
-      'transform': 'translate(0, -0.5em)',
-      'text-align': 'right',
-    });
-  }
-  drawBars(data, option, element, barchartId, interval, count);
-  drawAxis(data, option, element, barchartId);
-}
-
-function drawAxis(data, option, element, barchartId) {
-  let xLabel = '', yLabel = '';
-  if (option.xLabel !== undefined) {
-    xLabel = option.xLabel;
-  }
-  if (option.yLabel !== undefined) {
-    yLabel = option.yLabel;
-  }
-  $('<div id="' + barchartId + '_axis_container"></div>').appendTo(element);
-  $('#' + barchartId + '_axis_container').css({
-    'width': '100%',
-    'height': '100%',
-    'display':'flex',
-    'flex-direction': 'row',
-    // 'justify-content': 'center',
-    'align-items': 'flex-end',
-    // 'transform': 'translate(0, -200.00%)',
-    // 'padding': '0px',
-    // 'border-bottom': '3px solid black',
-  });
-  $('<div id="' + barchartId + '_y_axis"></div>').appendTo('#' + barchartId + '_axis_container');
-  $('#' + barchartId + '_y_axis').css({
-    'width': '0px',
-    'height': $(element).css('height'),
-    'backgroundColor': 'black',
-    'position': 'absolute',
-    'display':'flex',
-    'flex-direction': 'column',
-    'justify-content': 'center',
-    'align-items': 'center',
-    'border-left': 'solid black',
-  });
-  $('<div id="' + barchartId + 'y_label">' + yLabel + '</div>').appendTo('#' + barchartId + '_y_axis');
-  $('#' + barchartId + 'y_label').css({
-    // 'backgroundColor': 'pink',
-    // 'font-size': '25px',
-    'text-align': 'center',
-    'width': $('#' + barchartId + '_y_axis').css('height'),
-    'height': '8em',
-    'transform': 'rotate(-90deg)',
-    'color': 'black',
-  });
-  $('<div id="' + barchartId + '_x_axis"></div>').appendTo('#' + barchartId + '_axis_container');
-  $('#' + barchartId + '_x_axis').css({
-    'width': '100%',
-    'height': '1%',
-    // 'backgroundColor': 'black',
-    'border-bottom': 'solid black',
-    'display':'flex',
-    'flex-direction': 'row',
-    'z-index': '2',
-  });
-  $('<div id="' + barchartId + 'x_label">' + xLabel + '</div>').appendTo('#' + barchartId + '_x_axis');
-  $('#' + barchartId + 'x_label').css({
-    // 'backgroundColor': 'pink',
-    'text-align': 'center',
-    'width': '100%',
-    'transform': 'translate(0px, 1.5em)',
-    'color': 'black',
-  });
-}
-
 function drawBars(data, option, element,barchartId, interval, count) {
   let scale, color = 'pink', colorLabel = 'black', colorStat = 'black', spacing = data.length;
   $('<div id="' + barchartId + 'bar_container"></div>').appendTo(element);
@@ -259,7 +139,127 @@ function drawBars(data, option, element,barchartId, interval, count) {
     }
   }
 }
-
+function drawAxis(data, option, element, barchartId) {
+  let xLabel = '', yLabel = '';
+  if (option.xLabel !== undefined) {
+    xLabel = option.xLabel;
+  }
+  if (option.yLabel !== undefined) {
+    yLabel = option.yLabel;
+  }
+  $('<div id="' + barchartId + '_axis_container"></div>').appendTo(element);
+  $('#' + barchartId + '_axis_container').css({
+    'width': '100%',
+    'height': '100%',
+    'display':'flex',
+    'flex-direction': 'row',
+    // 'justify-content': 'center',
+    'align-items': 'flex-end',
+    // 'transform': 'translate(0, -200.00%)',
+    // 'padding': '0px',
+    // 'border-bottom': '3px solid black',
+  });
+  $('<div id="' + barchartId + '_y_axis"></div>').appendTo('#' + barchartId + '_axis_container');
+  $('#' + barchartId + '_y_axis').css({
+    'width': '0px',
+    'height': $(element).css('height'),
+    'backgroundColor': 'black',
+    'position': 'absolute',
+    'display':'flex',
+    'flex-direction': 'column',
+    'justify-content': 'center',
+    'align-items': 'center',
+    'border-left': 'solid black',
+  });
+  $('<div id="' + barchartId + 'y_label">' + yLabel + '</div>').appendTo('#' + barchartId + '_y_axis');
+  $('#' + barchartId + 'y_label').css({
+    // 'backgroundColor': 'pink',
+    // 'font-size': '25px',
+    'text-align': 'center',
+    'width': $('#' + barchartId + '_y_axis').css('height'),
+    'height': '8em',
+    'transform': 'rotate(-90deg)',
+    'color': 'black',
+  });
+  $('<div id="' + barchartId + '_x_axis"></div>').appendTo('#' + barchartId + '_axis_container');
+  $('#' + barchartId + '_x_axis').css({
+    'width': '100%',
+    'height': '1%',
+    // 'backgroundColor': 'black',
+    'border-bottom': 'solid black',
+    'display':'flex',
+    'flex-direction': 'row',
+    'z-index': '2',
+  });
+  $('<div id="' + barchartId + 'x_label">' + xLabel + '</div>').appendTo('#' + barchartId + '_x_axis');
+  $('#' + barchartId + 'x_label').css({
+    // 'backgroundColor': 'pink',
+    'text-align': 'center',
+    'width': '100%',
+    'transform': 'translate(0px, 1.5em)',
+    'color': 'black',
+  });
+}
+function drawBarCanvas(data, option, element, barchartId) {
+  let interval;
+  let count;
+  if (typeof option.tickInterval === 'number') {
+    interval = option.tickInterval;
+  } else {
+    interval = findInterval(data);
+  }
+  if (typeof option.chartHeight === 'number') {
+    count = Math.ceil(option.chartHeight / interval);
+  } else {
+    count = Math.ceil(findMax(data) / interval);
+  }
+  $('<div id="' + barchartId + '_ticks_container"></div>').appendTo(element);
+  $('#' + barchartId + '_ticks_container').css({
+    'width': '100%',
+    'height': '100%',
+    // 'backgroundColor': 'pink',
+    'display':'flex',
+    'flex-direction': 'column-reverse',
+    'justify-content': 'flex-end',
+    'position': 'absolute',
+    // 'align-items': 'flex-end',
+  });
+  $('<div id="' + barchartId + '_ticks_label_container"></div>').appendTo(element);
+  $('#' + barchartId + '_ticks_label_container').css({
+    'width': '3em',
+    'height': '100%',
+    // 'backgroundColor': 'pink',
+    'position': 'absolute',
+    'display':'flex',
+    'flex-direction': 'column-reverse',
+    'justify-content': 'flex-end',
+    // 'align-items': 'flex-end',
+    'transform': 'translate(-3.5em)',
+    // 'padding': '0px',
+  });
+  for (let i = 0; i < count; i++) {
+    $('<div id="' + barchartId + 'tick_' + i + '"></div>').appendTo('#' + barchartId + '_ticks_container');
+    $('#' + barchartId + 'tick_' + i).css({
+      'width': '100%',
+      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
+      'backgroundColor': 'white',
+      'border-top': 'thin dashed black',
+      'display':'flex',
+      'justify-content': 'flex-end',
+      'z-index': '0',
+    });
+    $('<div id="' + barchartId + 'tick_label_' + i + '">' + interval * (i + 1) + '</div>').appendTo('#' + barchartId + '_ticks_label_container');
+    $('#' + barchartId + 'tick_label_' + i).css({
+      'font-size': '12px',
+      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
+      // 'backgroundColor': 'pink',
+      'transform': 'translate(0, -0.5em)',
+      'text-align': 'right',
+    });
+  }
+  drawBars(data, option, element, barchartId, interval, count);
+  drawAxis(data, option, element, barchartId);
+}
 function drawBarChart(data, option, element) {
   let barchartId = 'barchart_'+ Math.ceil(Math.random() * 1000);
   let width = 'auto', height = '400px';
@@ -306,7 +306,7 @@ $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barchartHeight: '600px',
   // barLabelPosition: 'top',
   // barStatPosition: 'center',
-  // barLabelColor: 'bar',
+  barLabelColor: 'bar',
   // barStatColor: '#ff1430',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
@@ -317,7 +317,7 @@ $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
 },'#demo2')});
 $(document).ready(function () {drawBarChart([1, 2, 3, 4, 5, 6, 7, 8, 9, 11], {
   // barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
-  barLabel: ['one', 'two', 'three', 'four'],
+  barLabel: ['one', 'two', 'three', 'four', 'five'],
   // barLabelPosition: 'top',
   barStatPosition: 'none',
   // barLabelColor: 'bar',
