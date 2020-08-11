@@ -333,7 +333,8 @@ function drawBarChart(data, option, element) {
     // 'backgroundColor': 'pink',
     'flex': '0 0 10%',
     'text-align': 'center',
-    'font-size': '40px',
+    'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
+    'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: 'black',
     'margin': '0.5em',
     'margin-bottom': '0em',
   }, option.title);
@@ -349,7 +350,9 @@ function drawBarChart(data, option, element) {
 }
 
 $(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
-  barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
+  barColor: ['yellow', 'green', 'red', 'green', 'blue', 'purple'],
+  barchartTitleSize: '100px',
+  barchartTitleColor: 'darkgrey',
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
   // barchartWidth: 'auto',
   // barchartHeight: '600px',
