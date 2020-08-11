@@ -34,6 +34,9 @@ function findInterval(data) {
   }
   return parseInt(interval);
 }
+function randomColor() {
+  return 'rgb(' + Math.ceil(Math.random() * 255) + ', ' + Math.ceil(Math.random() * 255) + ', ' + Math.ceil(Math.random() * 255) + ')';
+}
 function drawDiv (id, parent, css, content) {
   //css and html content optional, return id with #
   if (id[0] === '#') {
@@ -54,8 +57,65 @@ function drawDiv (id, parent, css, content) {
   }
   return id;
 }
-function drawSubBars (data, parent, option) {
-
+function drawSubBars (data, id, parent, option) {
+  let subBarId, barHeight, barPercent;
+  data = data[0] === undefined ? [data]: data;
+  for (let i = 0; i < data.length; i++) {
+    barHeight = data[i] / sumAll(data) * parseInt($(parent).css('height'));
+    barPercent = data[i] / sumAll(data) * 100;
+    subBarId = drawDiv(id + i, parent, {
+    'width': '100%',
+    'height': barPercent + '%',
+    'backgroundColor': () => {
+      if (data.length === 1) {
+        return 'transparent';
+      } else if (option.barColor !== undefined) {
+        return option.barColor[i];
+      } else {
+        return randomColor();
+      }
+    },
+    });
+    if (option.barStatPosition !== 'none') {
+      statId = drawDiv(id + '_stat_' + i, subBarId, {
+        'width': '100%',
+        // 'font-size': '30px',
+        'text-align': 'center',
+        'position': 'absolute',
+      }, data[i]);
+      switch (option.barStatColor) {
+      case '':
+      case undefined:
+        break;
+      case 'bar':
+        colorStat = colorBar;
+        break;
+      default:
+        colorStat = option.barStatColor;
+        break;
+      }
+      $(statId).css({
+        'color': colorStat,
+      });
+      switch (option.barStatPosition) {
+      case 'bottom':
+        $(statId).css({
+          'transform': 'translate(0, calc(' + barHeight + 'px))',
+        });
+        break;
+      case 'center':
+        $(statId).css({
+          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
+        });
+        break;
+      default:
+        $(statId).css({
+          'transform': 'translate(0, -1em)',
+        });
+        break;
+      }
+    }
+  }
 }
 function drawBars(data, option, element, interval, count) {
   let scale, spacing = data.length, barHeight;
@@ -78,17 +138,22 @@ function drawBars(data, option, element, interval, count) {
   scale = parseInt($(parentId).css('height')) / count / interval;
 
   for (let i = 0; i < data.length; i++) {
-    barHeight = data[i] * scale;
+    barHeight = sumAll(data[i]) * scale;
     if (option.barColor !== undefined && option.barColor[i] !== undefined) {
       colorBar = option.barColor[i];
     }
     barId = drawDiv(parentId + '_bar_' + i, parentId, {
       'flex': '0 0 calc(100% / ' + spacing + ')',
-      'height': sumAll(barHeight) +'px',
+      'height': barHeight +'px',
       'backgroundColor': colorBar,
       'z-index': '1',
       'position': 'relative',
+      'display': 'flex',
+      'flex-direction': 'column-reverse',
     });
+
+    drawSubBars(data[i], barId + '_sub_', barId, option);
+
     labelParentId = drawDiv(barId + '_label_container', barId, {
       'width': '100%',
       'height': '100%',
@@ -130,45 +195,6 @@ function drawBars(data, option, element, interval, count) {
       default:
         $(labelId).css({
           'transform': 'translate(0, calc(' + barHeight + 'px))',
-        });
-        break;
-      }
-    }
-    if (option.barStatPosition !== 'none') {
-      statId = drawDiv(barId + '_stat', labelParentId, {
-        'width': '100%',
-        // 'font-size': '30px',
-        'text-align': 'center',
-        'position': 'absolute',
-      }, data[i]);
-      switch (option.barStatColor) {
-      case '':
-      case undefined:
-        break;
-      case 'bar':
-        colorStat = colorBar;
-        break;
-      default:
-        colorStat = option.barStatColor;
-        break;
-      }
-      $(statId).css({
-        'color': colorStat,
-      });
-      switch (option.barStatPosition) {
-      case 'bottom':
-        $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px))',
-        });
-        break;
-      case 'center':
-        $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
-        });
-        break;
-      default:
-        $(statId).css({
-          'transform': 'translate(0, -1em)',
         });
         break;
       }
@@ -322,29 +348,29 @@ function drawBarChart(data, option, element) {
   drawBarCanvas(data, option, barchartId);
 }
 
-$(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
+$(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
   barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
   // barchartWidth: 'auto',
   // barchartHeight: '600px',
   // barLabelPosition: 'top',
-  // barStatPosition: 'center',
+  barStatPosition: 'center',
   barLabelColor: 'black',
-  barStatColor: 'bar',
+  barStatColor: 'black',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
   xLabel: 'Provience',
   yLabel: 'Covid Cases',
-  // tickInterval: 5000,
-  // chartHeight: 30,
+  tickInterval: 10000,
+  chartHeight: 120000,
 },'#demo2')});
-$(document).ready(function () {drawBarChart([1, 2, 3, 4, 5, 6, 7, 8, 9, 11], {
-  // barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
-  barLabel: ['one', 'two', 'three', 'four', 'five'],
+$(document).ready(function () {drawBarChart([2, 3, 4, 5, 6, 7, 8, 9], {
+  barColor: ['purple', 'blue', 'green', 'yellow', 'orange', 'red'],
+  barLabel: ['two', 'three', 'four', 'five'],
   // barLabelPosition: 'top',
-  barStatPosition: 'none',
+  barStatPosition: 'center',
   // barLabelColor: 'bar',
-  // barStatColor: '#ff1430',
+  barStatColor: 'black',
   title: 'Numbers',
   barSpacing: 2,
   xLabel: 'X label',
