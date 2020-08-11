@@ -91,7 +91,7 @@ function drawSubBars (data, id, parent, option) {
         colorStat = $(subBarId).css('backgroundColor');
         break;
       default:
-        colorStat = option.barStatColor === 'string' ? option.barStatColor: option.barStatColor[i];
+        colorStat = typeof option.barStatColor === 'string' ? option.barStatColor: option.barStatColor[i];
         break;
       }
       $(statId).css({
