@@ -1,3 +1,14 @@
+function sumAll (data) {
+  let sum = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (typeof data[i] !== 'number') {
+      sum += sumAll(data[i]);
+    } else {
+      sum += data[i];
+    }
+  }
+  return sum;
+}
 function findMax(data) {
   let max = 0, ele;
   for (let i = 0; i < data.length; i++) {
@@ -11,17 +22,6 @@ function findMax(data) {
     }
   }
   return max;
-}
-function sumAll (data) {
-  let sum = 0;
-  for (let i = 0; i < data.length; i++) {
-    if (typeof data[i] !== 'number') {
-      sum += sumAll(data[i]);
-    } else {
-      sum += data[i];
-    }
-  }
-  return sum;
 }
 function findInterval(data) {
   let interval = '1', max = findMax(data);
@@ -317,8 +317,8 @@ $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barchartHeight: '600px',
   // barLabelPosition: 'top',
   // barStatPosition: 'center',
-  barLabelColor: 'bar',
-  // barStatColor: '#ff1430',
+  barLabelColor: 'black',
+  barStatColor: 'bar',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
   xLabel: 'Provience',
