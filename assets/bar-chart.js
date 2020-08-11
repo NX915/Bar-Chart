@@ -156,7 +156,7 @@ function drawBars(data, option, element, interval, count) {
         break;
       case 'center':
         $(statId).css({
-          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+          'transform': 'translate(0, calc(' + (data[i] * scale) / 2 + 'px - 0.5em))',
         });
         break;
       default:
