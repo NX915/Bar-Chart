@@ -1,6 +1,6 @@
 # Bar-Chart.js
 
-This is a simple bar chart library written in javascript with the help of jQuery. It was written as a practice activity in preperation for the lighthouse web development bootcamp. It is able to render horizontal bar charts with various options for customization to fit any theme.
+This is a simple bar chart library written in javascript with the help of jQuery. It was written as a practice activity in preperation for the lighthouse web development bootcamp. It is able to render horizontal bar charts with various options for customization to fit any theme. [Here is a link to the github pages with examples.](https://nx915.github.io/Bar-Chart/)
 
 ![Bar Chart Example Screenshot](https://i.imgur.com/xvVc2ra.png)
 
