@@ -51,7 +51,7 @@ function drawDiv (id, parent, css, content) {
   }
   return id;
 }
-function drawBars(data, option, element, barchartId, interval, count) {
+function drawBars(data, option, element, interval, count) {
   let scale, spacing = data.length;
   let colorBar = 'pink', colorLabel = 'black', colorStat = 'black';
   let parentId, barId, labelParentId, labelId, statId;
@@ -59,7 +59,7 @@ function drawBars(data, option, element, barchartId, interval, count) {
     spacing = data.length + option.barSpacing;
   }
 
-  parentId = drawDiv(barchartId + '_bar_container', element, {
+  parentId = drawDiv(element + '_bar_container', element, {
     'width': '100%',
     'height': '100%',
     // 'backgroundColor': 'green',
@@ -145,7 +145,7 @@ function drawBars(data, option, element, barchartId, interval, count) {
         colorStat = option.barStatColor;
         break;
       }
-      $('#' + barchartId + 'bar_' + i + '_stat').css({
+      $(statId).css({
         'color': colorStat,
       });
       switch (option.barStatPosition) {
@@ -168,7 +168,7 @@ function drawBars(data, option, element, barchartId, interval, count) {
     }
   }
 }
-function drawAxis(option, element, barchartId) {
+function drawAxis(option, element) {
   let xLabel = '', yLabel = '';
   let axisParentId, yAxisId, xAxisId;
   if (option.xLabel !== undefined) {
@@ -178,16 +178,16 @@ function drawAxis(option, element, barchartId) {
     yLabel = option.yLabel;
   }
 
-  axisParentId = drawDiv(barchartId + '_axis_container', element, {
+  axisParentId = drawDiv(element + '_axis_container', element, {
     'width': '100%',
     'height': '100%',
     'display':'flex',
     'flex-direction': 'row',
     'align-items': 'flex-end',
   });
-  yAxisId = drawDiv(barchartId + '_y_axis', axisParentId, {
+  yAxisId = drawDiv(element + '_y_axis', axisParentId, {
     'width': '0px',
-    'height': $(element).css('height'),
+    'height': $(axisParentId).css('height'),
     'backgroundColor': 'black',
     'position': 'absolute',
     'display':'flex',
@@ -200,13 +200,13 @@ function drawAxis(option, element, barchartId) {
     // 'backgroundColor': 'pink',
     // 'font-size': '25px',
     'text-align': 'center',
-    'width': $('#' + barchartId + '_y_axis').css('height'),
+    'width': $(yAxisId).css('height'),
     'height': '8em',
     'transform': 'rotate(-90deg)',
     'color': 'black',
   }, option.yLabel);
 
-  xAxisId = drawDiv(barchartId + '_x_axis', axisParentId, {
+  xAxisId = drawDiv(element + '_x_axis', axisParentId, {
     'width': '100%',
     'height': '1%',
     // 'backgroundColor': 'black',
@@ -223,7 +223,7 @@ function drawAxis(option, element, barchartId) {
     'color': 'black',
   }, option.xLabel);
 }
-function drawBarCanvas(data, option, element, barchartId) {
+function drawBarCanvas(data, option, element) {
   let interval, count;
   let tickParentId, tickLabelParentId;
   if (typeof option.tickInterval === 'number') {
@@ -237,7 +237,7 @@ function drawBarCanvas(data, option, element, barchartId) {
     count = Math.ceil(findMax(data) / interval);
   }
 
-  tickParentId = drawDiv(barchartId + '_ticks_container', element, {
+  tickParentId = drawDiv(element + '_ticks_container', element, {
     'width': '100%',
     'height': '100%',
     // 'backgroundColor': 'pink',
@@ -248,7 +248,7 @@ function drawBarCanvas(data, option, element, barchartId) {
     // 'align-items': 'flex-end',
   });
 
-  tickLabelParentId = drawDiv(barchartId + '_ticks_label_container', element, {
+  tickLabelParentId = drawDiv(element + '_ticks_label_container', element, {
     'width': '3em',
     'height': '100%',
     // 'backgroundColor': 'pink',
@@ -260,7 +260,7 @@ function drawBarCanvas(data, option, element, barchartId) {
   });
 
   for (let i = 0; i < count; i++) {
-    drawDiv(barchartId + '_tick_' + i, tickParentId, {
+    drawDiv(element + '_tick_' + i, tickParentId, {
       'width': '100%',
       'height': parseInt($(tickParentId).css('height')) / count + 'px',
       'border-top': 'thin dashed black',
@@ -268,7 +268,7 @@ function drawBarCanvas(data, option, element, barchartId) {
       'justify-content': 'flex-end',
       'z-index': '0',
     });
-    drawDiv(barchartId + '_tick_label_' + i, tickLabelParentId, {
+    drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
       'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
       // 'backgroundColor': 'pink',
@@ -276,8 +276,8 @@ function drawBarCanvas(data, option, element, barchartId) {
       'text-align': 'right',
     }, interval * (i + 1));
   }
-  drawBars(data, option, element, barchartId, interval, count);
-  drawAxis(option, element, barchartId);
+  drawBars(data, option, element, interval, count);
+  drawAxis(option, element);
 }
 function drawBarChart(data, option, element) {
   let barchartId = 'barchart_'+ Math.ceil(Math.random() * 10000);
@@ -295,24 +295,24 @@ function drawBarChart(data, option, element) {
     'align-items': 'center',
     }
   );
-  $('<div id="' + barchartId + '_title">' + option.title + '</div>').appendTo(element);
-  $('#' + barchartId + '_title').css({
+
+  drawDiv(barchartId + '_title', element, {
     // 'backgroundColor': 'pink',
     'flex': '0 0 10%',
     'text-align': 'center',
     'font-size': '40px',
     'margin': '0.5em',
     'margin-bottom': '0em',
-  });
-  $('<div id="' + barchartId + '"></div>').appendTo(element);
-  $('#' + barchartId).css({
+  }, option.title);
+
+  drawDiv(barchartId, element, {
     // 'backgroundColor': 'cyan',
     'width': width,
     'height': height,
     'box-sizing': 'border-box',
     'position': 'relative',//needed for the absolute positioned child
   });
-  drawBarCanvas(data, option, '#' + barchartId);
+  drawBarCanvas(data, option, barchartId);
 }
 
 $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
