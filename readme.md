@@ -22,14 +22,14 @@ barchartTitleCss:| **object**| *{'margin': '15px'}*
 barchartWidth:| **string**| *'80%'*
 barchartHeight:| **string**| *'83%'*
 barLabel:| **array of strings**| *['QC', 'ON', 'AB', 'BC', 'SK', 'NS']*
-barLabelPosition:| **string**| *'top'*
+barLabelPosition:| **string**| *'top' or 'center' default to bottom*
 barLabelColor:| **string**| *'#f5f5f5'*
 barStatColor:| **array of strings**| *['purple', 'orange', 'green']*
-barStatPosition:| **string**| *'none'*
+barStatPosition:| **string**| *'none' or 'center' or 'bottom' default to top*
 barSpacing:| **number**| *7*
 chartHeight:| **number**| *125000*
 tickInterval:| **number**| *5000*
-tickStyle:| **string**| *'thin dotted #2e2e2e'*
+tickStyle:| **string**| *'thin dotted #2e2e2e' CSS border format*
 title:| **string**| *'Cov-19 in Canada'*
 xLabel:| **string**| *'Provience'*
 xLabelOffset:| **string**| *'-5px'*
