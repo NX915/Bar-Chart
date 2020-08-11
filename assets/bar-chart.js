@@ -31,10 +31,16 @@ function findInterval(data) {
   }
   return parseInt(interval);
 }
-function drawBars(data, option, element,barchartId, interval, count) {
-  let scale, color = 'pink', colorLabel = 'black', colorStat = 'black', spacing = data.length;
-  $('<div id="' + barchartId + 'bar_container"></div>').appendTo(element);
-  $('#' + barchartId + 'bar_container').css({
+function drawDiv (name, parent, css) {
+  $('<div id="'+ name + '"></div>').appendTo(parent);
+  if (typeof css === 'object') {
+    $('#' + name).css(css);
+  }
+}
+function drawBars(data, option, element, barchartId, interval, count) {
+  let scale, colorBar = 'pink', colorLabel = 'black', colorStat = 'black', spacing = data.length;
+
+  drawDiv(barchartId + '_bar_container', element, {
     'width': '100%',
     'height': '100%',
     // 'backgroundColor': 'green',
@@ -45,19 +51,22 @@ function drawBars(data, option, element,barchartId, interval, count) {
     'justify-content': 'space-evenly',
     // 'transform': 'translate(0, -100%)',
   });
-  scale = parseInt($('#' + barchartId + 'bar_container').css('height')) / count/ interval;
+
+  scale = parseInt($('#' + barchartId + '_bar_container').css('height')) / count/ interval;
+
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
   }
+
   for (let i = 0; i < data.length; i++) {
     if (option.barColor !== undefined && option.barColor[i] !== undefined) {
-      color = option.barColor[i];
+      colorBar = option.barColor[i];
     }
-    $(('<div id="' + barchartId + 'bar_' + i + '"></div>')).appendTo('#' + barchartId + 'bar_container');
+    $(('<div id="' + barchartId + 'bar_' + i + '"></div>')).appendTo('#' + barchartId + '_bar_container');
     $('#' + barchartId + 'bar_' + i).css({
       'flex': '0 0 calc(100% / ' + spacing + ')',
       'height': (data[i] * scale) +'px',
-      'backgroundColor': color,
+      'backgroundColor': colorBar,
       'z-index': '1',
       'position': 'relative',
     });
@@ -80,7 +89,7 @@ function drawBars(data, option, element,barchartId, interval, count) {
       case undefined:
         break;
       case 'bar':
-        colorLabel = color;
+        colorLabel = colorBar;
         break;
       default:
         colorLabel = option.barLabelColor;
@@ -121,7 +130,7 @@ function drawBars(data, option, element,barchartId, interval, count) {
       case undefined:
         break;
       case 'bar':
-        colorStat = color;
+        colorStat = colorBar;
         break;
       default:
         colorStat = option.barStatColor;
