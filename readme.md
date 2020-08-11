@@ -49,6 +49,7 @@ yLabelOffset:| **string**| *'10px'*
 - [ ] Add animation
 - [ ] Add option for interval tick length
 - [ ] Add option for chart legend
+- [ ] Add auto color gradient selection
 
 # Made with help from
 * [Mozilla Developer Network](https://developer.mozilla.org)
