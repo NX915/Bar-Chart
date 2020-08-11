@@ -263,7 +263,6 @@ function drawBarCanvas(data, option, element, barchartId) {
     drawDiv(barchartId + '_tick_' + i, tickParentId, {
       'width': '100%',
       'height': parseInt($(tickParentId).css('height')) / count + 'px',
-      'backgroundColor': 'white',
       'border-top': 'thin dashed black',
       'display':'flex',
       'justify-content': 'flex-end',
@@ -281,8 +280,8 @@ function drawBarCanvas(data, option, element, barchartId) {
   drawAxis(option, element, barchartId);
 }
 function drawBarChart(data, option, element) {
-  let barchartId = 'barchart_'+ Math.ceil(Math.random() * 1000);
-  let width = 'auto', height = '400px';
+  let barchartId = 'barchart_'+ Math.ceil(Math.random() * 10000);
+  let width = '80%', height = '70%';
   if (option.barchartWidth !== undefined) {
     width = option.barchartWidth;
   }
@@ -290,43 +289,40 @@ function drawBarChart(data, option, element) {
     height = option.barchartHeight;
   }
   $(element).css({
-    'width': width,
-    'height': height,
-    'backgroundColor': 'grey',
     'display': 'flex',
     'flex-direction': 'column',
     'justify-content': 'flex-start',
     'align-items': 'center',
     }
   );
-  $('<h1 id="' + barchartId + '_title">' + option.title + '</h1>').appendTo(element);
-  $('#' + barchartId + '_title' + barchartId).css({
+  $('<div id="' + barchartId + '_title">' + option.title + '</div>').appendTo(element);
+  $('#' + barchartId + '_title').css({
     // 'backgroundColor': 'pink',
     'flex': '0 0 10%',
     'text-align': 'center',
-    'font-size': '25px',
+    'font-size': '40px',
     'margin': '0.5em',
-    'margin-bottom': '1em',
+    'margin-bottom': '0em',
   });
   $('<div id="' + barchartId + '"></div>').appendTo(element);
   $('#' + barchartId).css({
-    'backgroundColor': 'cyan',
-    'width': '80%',
-    'height': '70%',
+    // 'backgroundColor': 'cyan',
+    'width': width,
+    'height': height,
     'box-sizing': 'border-box',
     'position': 'relative',//needed for the absolute positioned child
   });
-  drawBarCanvas(data, option, '#' + barchartId, barchartId);
+  drawBarCanvas(data, option, '#' + barchartId);
 }
 
 $(document).ready(function () {drawBarChart([60471, 40046, 11430, 3934, 1445], {
   barColor: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
   barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
-  barchartWidth: 'auto',
-  barchartHeight: '600px',
+  // barchartWidth: 'auto',
+  // barchartHeight: '600px',
   // barLabelPosition: 'top',
   // barStatPosition: 'center',
-  barLabelColor: 'white',
+  barLabelColor: 'black',
   barStatColor: 'bar',
   title: 'Number of Covid Cases Per Provience',
   barSpacing: 4,
