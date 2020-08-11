@@ -1,6 +1,6 @@
 # About
 
-This is a simple bar chart library written in javascript with the help of jQuery. It was written as a practice in preperation for the lighthouse web development bootcamp. It is able to render horizontal bar charts with various options for customization to fix any theme.
+This is a simple bar chart library written in javascript with the help of jQuery. It was written as a practice activity in preperation for the lighthouse web development bootcamp. It is able to render horizontal bar charts with various options for customization to fit any theme.
 
 ![Bar Chart Example Screenshot](https://i.imgur.com/xvVc2ra.png)
 
@@ -37,7 +37,13 @@ yLabel:| **string**| *'Cases (Aug 11 2020)'*
 yLabelOffset:| **string**| *'10px'*
 
 # Known issues / bugs
+* **Bug:** X axis label will overflow outside of chart boundary depending on chart size and view port size
 
 # On the roadmap
+* Add animation
+* Add option for interval tick length
+* Add option for chart legend
 
 # Made with help from
+* [Mozilla Developer Network](https://developer.mozilla.org)
+* [jQuery](https://jquery.com)
