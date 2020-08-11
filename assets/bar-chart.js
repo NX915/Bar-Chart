@@ -100,7 +100,7 @@ function drawSubBars (data, id, parent, option) {
       switch (option.barStatPosition) {
       case 'bottom':
         $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px))',
+          'transform': 'translate(0, calc(' + barHeight + 'px - 0.1em))',
         });
         break;
       case 'center':
@@ -110,7 +110,7 @@ function drawSubBars (data, id, parent, option) {
         break;
       default:
         $(statId).css({
-          'transform': 'translate(0, -1em)',
+          'transform': 'translate(0, -1.1em)',
         });
         break;
       }
@@ -184,7 +184,7 @@ function drawBars(data, option, element, interval, count) {
       switch (option.barLabelPosition) {
       case 'top':
         $(labelId).css({
-          'transform': 'translate(0, -1em)',
+          'transform': 'translate(0, -1.1em)',
         });
         break;
       case 'center':
@@ -194,7 +194,7 @@ function drawBars(data, option, element, interval, count) {
         break;
       default:
         $(labelId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px))',
+          'transform': 'translate(0, calc(' + barHeight + 'px + 0.1em))',
         });
         break;
       }
@@ -233,7 +233,7 @@ function drawAxis(option, element) {
     // 'font-size': '25px',
     'text-align': 'center',
     'width': $(yAxisId).css('height'),
-    'height': '8em',
+    'height': option.yLabelOffset !== undefined ? 'calc(' + option.yLabelOffset + ' + 8em)': '8em',
     'transform': 'rotate(-90deg)',
     'color': option.axisColor !== undefined ? option.axisColor: 'black',
   }, option.yLabel);
@@ -251,7 +251,7 @@ function drawAxis(option, element) {
     // 'backgroundColor': 'pink',
     'text-align': 'center',
     'width': '100%',
-    'transform': 'translate(0px, 1.5em)',
+    'transform': option.xLabelOffset !== undefined ? 'translate(0px, calc(' + option.xLabelOffset + ' + 1.5em))': 'translate(0px, 1.5em)',
     'color': option.axisColor !== undefined ? option.axisColor: 'black',
   }, option.xLabel);
 }
