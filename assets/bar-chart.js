@@ -88,10 +88,10 @@ function drawSubBars (data, id, parent, option) {
       case undefined:
         break;
       case 'bar':
-        colorStat = colorBar;
+        colorStat = $(subBarId).css('backgroundColor');
         break;
       default:
-        colorStat = option.barStatColor;
+        colorStat = option.barStatColor === 'string' ? option.barStatColor: option.barStatColor[i];
         break;
       }
       $(statId).css({
@@ -349,24 +349,7 @@ function drawBarChart(data, option, element) {
   drawBarCanvas(data, option, barchartId);
 }
 
-$(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
-  barColor: ['yellow', 'green', 'red', 'green', 'blue', 'purple'],
-  barchartTitleSize: '100px',
-  barchartTitleColor: 'darkgrey',
-  barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
-  // barchartWidth: 'auto',
-  // barchartHeight: '600px',
-  // barLabelPosition: 'top',
-  barStatPosition: 'center',
-  barLabelColor: 'black',
-  barStatColor: 'black',
-  title: 'Number of Covid Cases Per Provience',
-  barSpacing: 4,
-  xLabel: 'Provience',
-  yLabel: 'Covid Cases',
-  tickInterval: 10000,
-  chartHeight: 120000,
-},'#demo2')});
+
 $(document).ready(function () {drawBarChart([2, 3, 4, 5, 6, 7, 8, 9], {
   barColor: ['purple', 'blue', 'green', 'yellow', 'orange', 'red'],
   barLabel: ['two', 'three', 'four', 'five'],
@@ -381,3 +364,21 @@ $(document).ready(function () {drawBarChart([2, 3, 4, 5, 6, 7, 8, 9], {
   // tickInterval: 2,
   // chartHeight: 30,
 },'#demo')});
+$(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
+  barColor: ['yellow', 'blue', 'red', 'green', 'blue', 'purple'],
+  barchartTitleSize: '100px',
+  barchartTitleColor: 'darkgrey',
+  barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
+  // barchartWidth: 'auto',
+  // barchartHeight: '600px',
+  // barLabelPosition: 'top',
+  barStatPosition: 'center',
+  barLabelColor: 'black',
+  barStatColor: ['purple', 'orange', 'green'],
+  title: 'Number of Covid Cases Per Provience',
+  barSpacing: 4,
+  xLabel: 'Provience',
+  yLabel: 'Covid Cases',
+  tickInterval: 10000,
+  chartHeight: 120000,
+},'#demo2')});
