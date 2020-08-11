@@ -11,7 +11,7 @@ Currently there is only one API call to draw the bar chart, it is formated as fo
 * **option**: accepts an object with various options that will be listed below. An example would be {title: 'Numbers', barSpacing: 2,}.
 * **parent**: the id of the parent element within the html such as #parent_id.
 
-# Options (**type** *example*)
+# Options
 name | type | example
 --- | --- | ---
 axisColor:| **string**| *'#b5b5b5'*
