@@ -204,7 +204,7 @@ function drawAxis(option, element, barchartId) {
     'height': '8em',
     'transform': 'rotate(-90deg)',
     'color': 'black',
-  });
+  }, option.yLabel);
 
   xAxisId = drawDiv(barchartId + '_x_axis', axisParentId, {
     'width': '100%',
@@ -221,11 +221,11 @@ function drawAxis(option, element, barchartId) {
     'width': '100%',
     'transform': 'translate(0px, 1.5em)',
     'color': 'black',
-  });
+  }, option.xLabel);
 }
 function drawBarCanvas(data, option, element, barchartId) {
-  let interval;
-  let count;
+  let interval, count;
+  let tickParentId, tickLabelParentId;
   if (typeof option.tickInterval === 'number') {
     interval = option.tickInterval;
   } else {
@@ -236,8 +236,8 @@ function drawBarCanvas(data, option, element, barchartId) {
   } else {
     count = Math.ceil(findMax(data) / interval);
   }
-  $('<div id="' + barchartId + '_ticks_container"></div>').appendTo(element);
-  $('#' + barchartId + '_ticks_container').css({
+
+  tickParentId = drawDiv(barchartId + '_ticks_container', element, {
     'width': '100%',
     'height': '100%',
     // 'backgroundColor': 'pink',
@@ -247,8 +247,8 @@ function drawBarCanvas(data, option, element, barchartId) {
     'position': 'absolute',
     // 'align-items': 'flex-end',
   });
-  $('<div id="' + barchartId + '_ticks_label_container"></div>').appendTo(element);
-  $('#' + barchartId + '_ticks_label_container').css({
+
+  tickLabelParentId = drawDiv(barchartId + '_ticks_label_container', element, {
     'width': '3em',
     'height': '100%',
     // 'backgroundColor': 'pink',
@@ -256,29 +256,26 @@ function drawBarCanvas(data, option, element, barchartId) {
     'display':'flex',
     'flex-direction': 'column-reverse',
     'justify-content': 'flex-end',
-    // 'align-items': 'flex-end',
     'transform': 'translate(-3.5em)',
-    // 'padding': '0px',
   });
+
   for (let i = 0; i < count; i++) {
-    $('<div id="' + barchartId + 'tick_' + i + '"></div>').appendTo('#' + barchartId + '_ticks_container');
-    $('#' + barchartId + 'tick_' + i).css({
+    drawDiv(barchartId + '_tick_' + i, tickParentId, {
       'width': '100%',
-      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
+      'height': parseInt($(tickParentId).css('height')) / count + 'px',
       'backgroundColor': 'white',
       'border-top': 'thin dashed black',
       'display':'flex',
       'justify-content': 'flex-end',
       'z-index': '0',
     });
-    $('<div id="' + barchartId + 'tick_label_' + i + '">' + interval * (i + 1) + '</div>').appendTo('#' + barchartId + '_ticks_label_container');
-    $('#' + barchartId + 'tick_label_' + i).css({
+    drawDiv(barchartId + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
-      'height': parseInt($('#' + barchartId + '_ticks_container').css('height')) / count + 'px',
+      'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
       // 'backgroundColor': 'pink',
       'transform': 'translate(0, -0.5em)',
       'text-align': 'right',
-    });
+    }, interval * (i + 1));
   }
   drawBars(data, option, element, barchartId, interval, count);
   drawAxis(option, element, barchartId);
