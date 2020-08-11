@@ -7,9 +7,12 @@ This is a simple bar chart library written in javascript with the help of jQuery
 # API
 Currently there is only one API call to draw the bar chart, it is formated as follow:
 > drawBarChart(dataset, option, parent)
-* **dataset**: accepts array of numbers such as *[1, 2, 3, 4]*, or a nested array of numbers such as *[[1, 2], [1, 2]]*. Top level array determine number of main values, numbers within the nested array are displayed from bottom to top with in each bar.
-* **option**: accepts an object with various options that will be listed below. An example would be {title: 'Numbers', barSpacing: 2,}.
-* **parent**: the id of the parent element within the html such as #parent_id.
+## **dataset**: 
+Accepts array of numbers such as *[1, 2, 3, 4]*, or a nested array of numbers such as *[[1, 2], [1, 2]]*. Top level array determine number of main values, numbers within the nested array are displayed from bottom to top with in each bar.
+## **option**: 
+Accepts an object with various options that will be listed below. An example would be {title: 'Numbers', barSpacing: 2,}.
+## **parent**: 
+Takes the id of the parent element within the html such as #parent_id.
 
 # Options
 name | type | example
