@@ -2,7 +2,7 @@ function findMax(data) {
   let max = 0, ele;
   for (let i = 0; i < data.length; i++) {
     if (typeof data[i] !== 'number') {
-      ele = data[i].reduce((acc, cur) => acc + cur);
+      ele = sumAll(data[i]);
     } else {
       ele = data[i];
     }
@@ -11,6 +11,17 @@ function findMax(data) {
     }
   }
   return max;
+}
+function sumAll (data) {
+  let sum = 0;
+  for (let i = 0; i < data.length; i++) {
+    if (typeof data[i] !== 'number') {
+      sum += sumAll(data[i]);
+    } else {
+      sum += data[i];
+    }
+  }
+  return sum;
 }
 function findInterval(data) {
   let interval = '1', max = findMax(data);
