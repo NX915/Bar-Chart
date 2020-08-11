@@ -2,7 +2,8 @@
 
 This is a simple bar chart library written in javascript with the help of jQuery. It was written as a practice in preperation for the lighthouse web development bootcamp. It is able to render horizontal bar charts with various options for customization to fix any theme.
 
-Example Screenshots (embedded within the readme as image tags)
+![Example Screenshot]
+(https://i.imgur.com/xvVc2ra.png)
 
 # API
 Currently there is only one API call to draw the bar chart, it is formated as follow:
