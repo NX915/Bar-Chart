@@ -32,6 +32,7 @@ function findInterval(data) {
   return parseInt(interval);
 }
 function drawDiv (id, parent, css, content) {
+  //css and html content optional, return id with #
   if (id[0] === '#') {
     id = id.slice(1);
   }
@@ -167,24 +168,24 @@ function drawBars(data, option, element, barchartId, interval, count) {
     }
   }
 }
-function drawAxis(data, option, element, barchartId) {
+function drawAxis(option, element, barchartId) {
   let xLabel = '', yLabel = '';
+  let axisParentId, yAxisId, xAxisId;
   if (option.xLabel !== undefined) {
     xLabel = option.xLabel;
   }
   if (option.yLabel !== undefined) {
     yLabel = option.yLabel;
   }
-  $('<div id="' + barchartId + '_axis_container"></div>').appendTo(element);
-  $('#' + barchartId + '_axis_container').css({
+
+  axisParentId = drawDiv(barchartId + '_axis_container', element, {
     'width': '100%',
     'height': '100%',
     'display':'flex',
     'flex-direction': 'row',
     'align-items': 'flex-end',
   });
-  $('<div id="' + barchartId + '_y_axis"></div>').appendTo('#' + barchartId + '_axis_container');
-  $('#' + barchartId + '_y_axis').css({
+  yAxisId = drawDiv(barchartId + '_y_axis', axisParentId, {
     'width': '0px',
     'height': $(element).css('height'),
     'backgroundColor': 'black',
@@ -195,8 +196,7 @@ function drawAxis(data, option, element, barchartId) {
     'align-items': 'center',
     'border-left': 'solid black',
   });
-  $('<div id="' + barchartId + 'y_label">' + yLabel + '</div>').appendTo('#' + barchartId + '_y_axis');
-  $('#' + barchartId + 'y_label').css({
+  drawDiv(yAxisId + '_label', yAxisId, {
     // 'backgroundColor': 'pink',
     // 'font-size': '25px',
     'text-align': 'center',
@@ -205,8 +205,8 @@ function drawAxis(data, option, element, barchartId) {
     'transform': 'rotate(-90deg)',
     'color': 'black',
   });
-  $('<div id="' + barchartId + '_x_axis"></div>').appendTo('#' + barchartId + '_axis_container');
-  $('#' + barchartId + '_x_axis').css({
+
+  xAxisId = drawDiv(barchartId + '_x_axis', axisParentId, {
     'width': '100%',
     'height': '1%',
     // 'backgroundColor': 'black',
@@ -215,8 +215,7 @@ function drawAxis(data, option, element, barchartId) {
     'flex-direction': 'row',
     'z-index': '2',
   });
-  $('<div id="' + barchartId + 'x_label">' + xLabel + '</div>').appendTo('#' + barchartId + '_x_axis');
-  $('#' + barchartId + 'x_label').css({
+  drawDiv(xAxisId + '_label', xAxisId, {
     // 'backgroundColor': 'pink',
     'text-align': 'center',
     'width': '100%',
@@ -282,7 +281,7 @@ function drawBarCanvas(data, option, element, barchartId) {
     });
   }
   drawBars(data, option, element, barchartId, interval, count);
-  drawAxis(data, option, element, barchartId);
+  drawAxis(option, element, barchartId);
 }
 function drawBarChart(data, option, element) {
   let barchartId = 'barchart_'+ Math.ceil(Math.random() * 1000);
