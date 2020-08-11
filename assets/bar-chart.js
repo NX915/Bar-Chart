@@ -221,13 +221,12 @@ function drawAxis(option, element) {
   yAxisId = drawDiv(element + '_y_axis', axisParentId, {
     'width': '0px',
     'height': $(axisParentId).css('height'),
-    'backgroundColor': 'black',
     'position': 'absolute',
     'display':'flex',
     'flex-direction': 'column',
     'justify-content': 'center',
     'align-items': 'center',
-    'border-left': 'solid black',
+    'border-left': option.axisColor !== undefined ? 'solid ' + option.axisColor: 'solid black',
   });
   drawDiv(yAxisId + '_label', yAxisId, {
     // 'backgroundColor': 'pink',
@@ -236,14 +235,14 @@ function drawAxis(option, element) {
     'width': $(yAxisId).css('height'),
     'height': '8em',
     'transform': 'rotate(-90deg)',
-    'color': 'black',
+    'color': option.axisColor !== undefined ? option.axisColor: 'black',
   }, option.yLabel);
 
   xAxisId = drawDiv(element + '_x_axis', axisParentId, {
     'width': '100%',
     'height': '1%',
     // 'backgroundColor': 'black',
-    'border-bottom': 'solid black',
+    'border-bottom': option.axisColor !== undefined ? 'solid ' + option.axisColor: 'solid black',
     'display':'flex',
     'flex-direction': 'row',
     'z-index': '2',
@@ -253,7 +252,7 @@ function drawAxis(option, element) {
     'text-align': 'center',
     'width': '100%',
     'transform': 'translate(0px, 1.5em)',
-    'color': 'black',
+    'color': option.axisColor !== undefined ? option.axisColor: 'black',
   }, option.xLabel);
 }
 function drawBarCanvas(data, option, element) {
@@ -296,13 +295,14 @@ function drawBarCanvas(data, option, element) {
     drawDiv(element + '_tick_' + i, tickParentId, {
       'width': '100%',
       'height': parseInt($(tickParentId).css('height')) / count + 'px',
-      'border-top': 'thin dashed black',
+      'border-top': option.tickStyle !== undefined ? option.tickStyle: 'thin dashed black',
       'display':'flex',
       'justify-content': 'flex-end',
       'z-index': '0',
     });
     drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
+      'color': option.axisColor !== undefined ? option.axisColor: 'black',
       'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
       // 'backgroundColor': 'pink',
       'transform': 'translate(0, -0.5em)',
@@ -351,38 +351,3 @@ function drawBarChart(data, option, element) {
   });
   drawBarCanvas(data, option, barchartId);
 }
-
-
-$(document).ready(function () {drawBarChart([2, 3, 4, 5, 6, 7, 8, 9], {
-  barColor: ['purple', 'blue', 'green', 'yellow', 'orange', 'red'],
-  barLabel: ['two', 'three', 'four', 'five'],
-  // barLabelPosition: 'top',
-  barStatPosition: 'center',
-  // barLabelColor: 'bar',
-  barStatColor: 'black',
-  title: 'Numbers',
-  barSpacing: 2,
-  xLabel: 'X label',
-  yLabel: 'Y label',
-  // tickInterval: 2,
-  // chartHeight: 30,
-},'#demo')});
-$(document).ready(function () {drawBarChart([[60471, 50886, 5695], [40046, 36279, 2786], [11430, 10097, 208], [3934, 3353, 195], [1445, 1257, 20]], {
-  barColor: ['yellow', 'blue', 'red', 'green', 'blue', 'purple'],
-  barchartTitleSize: '60px',
-  barchartTitleColor: 'darkgrey',
-  // barchartTitleCss: {'font-family': 'Arial, Helvetica, sans-serif'},
-  barLabel: ['QC', 'ON', 'AB', 'BC', 'SK'],
-  // barchartWidth: 'auto',
-  // barchartHeight: '600px',
-  // barLabelPosition: 'top',
-  barStatPosition: 'none',
-  barLabelColor: 'black',
-  barStatColor: ['purple', 'orange', 'green'],
-  title: 'Number of Covid Cases Per Provience',
-  barSpacing: 4,
-  xLabel: 'Provience',
-  yLabel: 'Covid Cases',
-  tickInterval: 10000,
-  chartHeight: 120000,
-},'#demo2')});
