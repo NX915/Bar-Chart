@@ -1,5 +1,8 @@
 function sumAll (data) {
   let sum = 0;
+  if (data.length === undefined) {
+    return data;
+  }
   for (let i = 0; i < data.length; i++) {
     if (typeof data[i] !== 'number') {
       sum += sumAll(data[i]);
@@ -51,8 +54,11 @@ function drawDiv (id, parent, css, content) {
   }
   return id;
 }
+function drawSubBars (data, parent, option) {
+
+}
 function drawBars(data, option, element, interval, count) {
-  let scale, spacing = data.length;
+  let scale, spacing = data.length, barHeight;
   let colorBar = 'pink', colorLabel = 'black', colorStat = 'black';
   let parentId, barId, labelParentId, labelId, statId;
   if (option.barSpacing !== undefined) {
@@ -72,12 +78,13 @@ function drawBars(data, option, element, interval, count) {
   scale = parseInt($(parentId).css('height')) / count / interval;
 
   for (let i = 0; i < data.length; i++) {
+    barHeight = data[i] * scale;
     if (option.barColor !== undefined && option.barColor[i] !== undefined) {
       colorBar = option.barColor[i];
     }
     barId = drawDiv(parentId + '_bar_' + i, parentId, {
       'flex': '0 0 calc(100% / ' + spacing + ')',
-      'height': (data[i] * scale) +'px',
+      'height': sumAll(barHeight) +'px',
       'backgroundColor': colorBar,
       'z-index': '1',
       'position': 'relative',
@@ -117,12 +124,12 @@ function drawBars(data, option, element, interval, count) {
         break;
       case 'center':
         $(labelId).css({
-          'transform': 'translate(0, calc(' + (data[i] * scale)/2 + 'px - 0.5em))',
+          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
         });
         break;
       default:
         $(labelId).css({
-          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+          'transform': 'translate(0, calc(' + barHeight + 'px))',
         });
         break;
       }
@@ -151,12 +158,12 @@ function drawBars(data, option, element, interval, count) {
       switch (option.barStatPosition) {
       case 'bottom':
         $(statId).css({
-          'transform': 'translate(0, calc(' + (data[i] * scale) + 'px))',
+          'transform': 'translate(0, calc(' + barHeight + 'px))',
         });
         break;
       case 'center':
         $(statId).css({
-          'transform': 'translate(0, calc(' + (data[i] * scale) / 2 + 'px - 0.5em))',
+          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
         });
         break;
       default:
