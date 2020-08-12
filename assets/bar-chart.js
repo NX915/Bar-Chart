@@ -313,41 +313,46 @@ function drawBarCanvas(data, option, element) {
   drawAxis(option, element);
 }
 function drawBarChart(data, option, element) {
-  let barchartId = 'barchart_'+ Math.ceil(Math.random() * 10000);
-  let width = '80%', height = '70%';
-  let titleId;
-  if (option.barchartWidth !== undefined) {
-    width = option.barchartWidth;
-  }
-  if (option.barchartHeight !== undefined) {
-    height = option.barchartHeight;
-  }
-  $(element).css({
-    'display': 'flex',
-    'flex-direction': 'column',
-    'justify-content': 'flex-start',
-    'align-items': 'center',
+  if (element[0] === '#') {
+    let barchartId = element.slice(1) + '_barchart_';
+    let width = '80%', height = '70%';
+    let titleId;
+
+    if (option.barchartWidth !== undefined) {
+      width = option.barchartWidth;
     }
-  );
+    if (option.barchartHeight !== undefined) {
+      height = option.barchartHeight;
+    }
+    $(element).css({
+      'display': 'flex',
+      'flex-direction': 'column',
+      'justify-content': 'flex-start',
+      'align-items': 'center',
+      }
+    );
 
-  titleId = drawDiv(barchartId + '_title', element, {
-    // 'backgroundColor': 'pink',
-    'flex': '0 0 10%',
-    'text-align': 'center',
-    'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
-    'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: 'black',
-    'margin-bottom': '0.5em',
-  }, option.title);
-  if (option.barchartTitleCss !== undefined){
-    $(titleId).css(option.barchartTitleCss);
+    titleId = drawDiv(barchartId + '_title', element, {
+      // 'backgroundColor': 'pink',
+      'flex': '0 0 10%',
+      'text-align': 'center',
+      'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
+      'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: 'black',
+      'margin-bottom': '0.5em',
+    }, option.title);
+    if (option.barchartTitleCss !== undefined){
+      $(titleId).css(option.barchartTitleCss);
+    }
+
+    drawDiv(barchartId, element, {
+      // 'backgroundColor': 'cyan',
+      'width': width,
+      'height': height,
+      'box-sizing': 'border-box',
+      'position': 'relative',//needed for the absolute positioned child
+    });
+    drawBarCanvas(data, option, barchartId);
+  } else {
+    alert('Bar Chart Error! Parent ID not found.');
   }
-
-  drawDiv(barchartId, element, {
-    // 'backgroundColor': 'cyan',
-    'width': width,
-    'height': height,
-    'box-sizing': 'border-box',
-    'position': 'relative',//needed for the absolute positioned child
-  });
-  drawBarCanvas(data, option, barchartId);
 }
