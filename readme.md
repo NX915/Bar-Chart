@@ -20,8 +20,8 @@ Currently there is only one API call to draw the bar chart, it is formated as fo
 # Options
 name | type | example
 --- | --- | ---
-axisColor:| **string**| *'solid #b5b5b5'*
-axisStyle:| **string**| *'solid #b5b5b5' CSS border format*
+axisLabelColor:| **string**| *'#b5b5b5'*
+axisStyle:| **string**| *'solid #b5b5b5'* **CSS border format**
 barColor:| **array of strings**| *['#7d7d7d', '#b5b5b5', '#f5f5f5', 'green', 'blue', 'purple']*
 barchartTitleSize:| **string**| *'50px'*
 barchartTitleColor:| **string**| *'#b5b5b5'*
@@ -29,14 +29,15 @@ barchartTitleCss:| **object**| *{'margin': '15px'}*
 barchartWidth:| **string**| *'80%'*
 barchartHeight:| **string**| *'83%'*
 barLabel:| **array of strings**| *['QC', 'ON', 'AB', 'BC', 'SK', 'NS']*
-barLabelPosition:| **string**| *'none', 'top', 'center' or 'bottom' default to bottom*
+barLabelPosition:| **string**| *'none', 'top', 'center' or 'bottom'* **default to bottom**
 barLabelColor:| **string**| *'#f5f5f5'*
 barStatColor:| **array of strings**| *['purple', 'orange', 'green']*
-barStatPosition:| **string**| *'none', 'top', 'center' or 'bottom' default to top*
+barStatPosition:| **string**| *'none', 'top', 'center' or 'bottom'* **default to top**
 barSpacing:| **number**| *7*
 chartHeight:| **number**| *125000*
 tickInterval:| **number**| *5000*
-tickStyle:| **string**| *'thin dotted #2e2e2e' CSS border format*
+tickLength:| **string**| *'3%'*
+tickStyle:| **string**| *'thin dotted #2e2e2e'* **CSS border format**
 title:| **string**| *'Cov-19 in Canada'*
 xLabel:| **string**| *'Provience'*
 xLabelOffset:| **string**| *'-5px'*

@@ -58,7 +58,7 @@ function drawDiv (id, parent, css, content) {
   return id;
 }
 function drawSubBars (data, id, parent, option) {
-  let subBarId, barHeight, barPercent;
+  let subBarId, barPercent, colorStat = '';
   data = data[0] === undefined ? [data]: data;
   for (let i = 0; i < data.length; i++) {
     barHeight = data[i] / sumAll(data) * parseInt($(parent).css('height'));
@@ -130,10 +130,13 @@ function drawLabel (id, parent, data, position, css) {
 }
 function drawBars(data, option, element, interval, count) {
   let spacing = data.length, barHeight, barPercent;
-  let colorBar = 'pink', colorLabel = 'black', colorStat = 'black';
-  let parentId, barParentId, barId, labelId, statId;
+  let colorBar = 'pink', colorLabel = '';
+  let parentId, barParentId, barId, labelId;
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
+  }
+  if (typeof option.barColor === 'string') {
+    colorBar = option.barColor;
   }
 
   parentId = drawDiv(element + '_bar_container', element, {
@@ -228,10 +231,10 @@ function drawBarCanvas(data, option, element) {
 
   for (let i = 0; i < count; i++) {
     drawDiv(element + '_tick_' + i, tickParentId, {
-      'width': '100%',
+      'width': option.tickLength === undefined ? '100%': option.tickLength,
       // 'height': parseInt($(tickParentId).css('height')) / count + 'px',
       'flex': '1 1 ' + 100 / count + '%',
-      'border-top': option.tickStyle !== undefined ? option.tickStyle: 'thin dashed black',
+      'border-top': option.tickStyle !== undefined ? option.tickStyle: 'thin dashed',
       'display':'flex',
       'justify-content': 'flex-end',
       'z-index': '0',
@@ -239,7 +242,7 @@ function drawBarCanvas(data, option, element) {
     drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
       'flex': '1 1 ' + 100 / count + '%',
-      'color': option.axisColor !== undefined ? option.axisColor: 'black',
+      'color': option.axisLabelColor !== undefined ? option.axisLabelColor: '',
       // 'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
       // 'backgroundColor': 'pink',
       'transform': 'translate(0, -0.5em)',
@@ -273,7 +276,7 @@ function drawBarChart(data, option, element) {
       'flex': '0 0 10%',
       'text-align': 'center',
       'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
-      'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: 'black',
+      'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: '',
       'margin-bottom': '0.5em',
     }, option.title);
     if (option.barchartTitleCss !== undefined){
@@ -299,7 +302,7 @@ function drawBarChart(data, option, element) {
       'writing-mode': 'vertical-rl',
       'text-orientation': 'mixed',
       'transform': option.yLabelOffset !== undefined ? 'rotate(180deg) translate(' + option.yLabelOffset + ')': 'rotate(180deg)',
-      'color': option.axisColor !== undefined ? option.axisColor: 'black',
+      'color': option.axisLabelColor !== undefined ? option.axisLabelColor: '',
     }, option.yLabel);
     drawDiv(barchartId + '_y_ticks_container', containerId, {
       // 'backgroundColor': 'yellow',
@@ -311,8 +314,8 @@ function drawBarChart(data, option, element) {
       'width': width,
       'height': '100%',
       'box-sizing': 'border-box',
-      'border-left': option.axisStyle !== undefined ? option.axisStyle: 'solid black',
-      'border-bottom': option.axisStyle !== undefined ? option.axisStyle: 'solid black',
+      'border-left': option.axisStyle !== undefined ? option.axisStyle: 'solid',
+      'border-bottom': option.axisStyle !== undefined ? option.axisStyle: 'solid',
       'position': 'relative',//needed for the absolute positioned child
     });
     drawDiv(barchartId + '_legend_container', containerId, {
@@ -335,7 +338,7 @@ function drawBarChart(data, option, element) {
       'text-align': 'center',
       // 'margin-top': '1.2em',
       'transform': option.xLabelOffset !== undefined ? 'translate(0px, ' + option.xLabelOffset + ')': '',
-      'color': option.axisColor !== undefined ? option.axisColor: 'black',
+      'color': option.axisLabelColor !== undefined ? option.axisLabelColor: '',
     }, option.xLabel);
 
   } else {
