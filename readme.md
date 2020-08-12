@@ -20,7 +20,8 @@ Currently there is only one API call to draw the bar chart, it is formated as fo
 # Options
 name | type | example
 --- | --- | ---
-axisColor:| **string**| *'#b5b5b5'*
+axisColor:| **string**| *'solid #b5b5b5'*
+axisStyle:| **string**| *'solid #b5b5b5' CSS border format*
 barColor:| **array of strings**| *['#7d7d7d', '#b5b5b5', '#f5f5f5', 'green', 'blue', 'purple']*
 barchartTitleSize:| **string**| *'50px'*
 barchartTitleColor:| **string**| *'#b5b5b5'*

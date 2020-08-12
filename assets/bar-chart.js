@@ -100,7 +100,7 @@ function drawSubBars (data, id, parent, option) {
       switch (option.barStatPosition) {
       case 'bottom':
         $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px - 0em))',
+          'transform': 'translate(0, calc(' + barHeight + 'px - 0.1em))',
         });
         break;
       case 'center':
@@ -110,7 +110,7 @@ function drawSubBars (data, id, parent, option) {
         break;
       default:
         $(statId).css({
-          'transform': 'translate(0, -1em)',
+          'transform': 'translate(0, -1.1em)',
         });
         break;
       }
@@ -184,7 +184,7 @@ function drawBars(data, option, element, interval, count) {
       switch (option.barLabelPosition) {
       case 'top':
         $(labelId).css({
-          'transform': 'translate(0, -1em)',
+          'transform': 'translate(0, -1.1em)',
         });
         break;
       case 'center':
@@ -194,7 +194,7 @@ function drawBars(data, option, element, interval, count) {
         break;
       default:
         $(labelId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px + 0em))',
+          'transform': 'translate(0, calc(' + barHeight + 'px + 0.1em))',
         });
         break;
       }
@@ -310,7 +310,7 @@ function drawBarCanvas(data, option, element) {
     }, interval * (i + 1));
   }
   drawBars(data, option, element, interval, count);
-  drawAxis(option, element);
+  // drawAxis(option, element);
 }
 function drawBarChart(data, option, element) {
   if (element[0] === '#') {
@@ -355,7 +355,7 @@ function drawBarChart(data, option, element) {
       'flex': '100 100 0px',
       'height': '100%',
     },);
-    drawDiv(barchartId + '_yAxisLabel_container', containerId, {
+    drawDiv(barchartId + '_y_axis_label_container', containerId, {
       // 'backgroundColor': 'green',
       'flex': '1 1 3%',
       'height': '100%',
@@ -365,7 +365,7 @@ function drawBarChart(data, option, element) {
       'transform': option.yLabelOffset !== undefined ? 'rotate(180deg) translate(' + option.yLabelOffset + ')': 'rotate(180deg)',
       'color': option.axisColor !== undefined ? option.axisColor: 'black',
     }, option.yLabel);
-    drawDiv(barchartId + '_yTicks_container', containerId, {
+    drawDiv(barchartId + '_y_ticks_container', containerId, {
       // 'backgroundColor': 'yellow',
       'flex': '1 1 3%',
       'height': '100%',
@@ -375,6 +375,8 @@ function drawBarChart(data, option, element) {
       'width': width,
       'height': '100%',
       'box-sizing': 'border-box',
+      'border-left': option.axisStyle !== undefined ? option.axisStyle: 'solid black',
+      'border-bottom': option.axisStyle !== undefined ? option.axisStyle: 'solid black',
       'position': 'relative',//needed for the absolute positioned child
     });
     drawDiv(barchartId + '_legend_container', containerId, {
@@ -383,13 +385,13 @@ function drawBarChart(data, option, element) {
       'height': '100%',
     });
     drawBarCanvas(data, option, barchartId);
-    drawDiv(barchartId + '_xLabel_container', element, {
+    drawDiv(barchartId + '_x_label_container', element, {
       // 'backgroundColor': 'orange',
       'width': '100%',
       'height': '5%',
       'position': 'relative',
     },);
-    drawDiv(barchartId + '_xAxisLabel_container', element, {
+    drawDiv(barchartId + '_x_axis_label_container', element, {
       // 'backgroundColor': 'blue',
       'width': '100%',
       'height': '10%',
