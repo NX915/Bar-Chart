@@ -270,22 +270,23 @@ function drawBarChart(data, option, element) {
       'align-items': 'center',
       }
     );
-
-    titleId = drawDiv(barchartId + '_title', element, {
-      // 'backgroundColor': 'pink',
-      'flex': '0 0 10%',
-      'text-align': 'center',
-      'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
-      'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: '',
-      'margin-bottom': '0.5em',
-    }, option.title);
-    if (option.barchartTitleCss !== undefined){
-      $(titleId).css(option.barchartTitleCss);
+    if (option.title !== undefined) {
+      titleId = drawDiv(barchartId + '_title', element, {
+        // 'backgroundColor': 'pink',
+        'flex': '0 0 10%',
+        'text-align': 'center',
+        'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
+        'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: '',
+        'margin-bottom': '0.5em',
+      }, option.title);
+      if (option.barchartTitleCss !== undefined){
+        $(titleId).css(option.barchartTitleCss);
+      }
     }
     containerId = drawDiv(barchartId + '_container', element, {
       // 'backgroundColor': 'red',
       'width': '100%',
-      'height': '80%',
+      'height': option.title === undefined ? '90%': '80%',
       'position': 'relative',
       'display': 'flex',
     },);
@@ -333,7 +334,7 @@ function drawBarChart(data, option, element) {
     drawDiv(barchartId + '_x_axis_label_container', element, {
       // 'backgroundColor': 'blue',
       'width': '100%',
-      'height': '10%',
+      'height': '5%',
       'position': 'relative',
       'text-align': 'center',
       // 'margin-top': '1.2em',

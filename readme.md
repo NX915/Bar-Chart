@@ -45,11 +45,11 @@ yLabel:| **string**| *'Cases (Aug 11 2020)'*
 yLabelOffset:| **string**| *'10px'*
 
 # Known issues / bugs
-* **Bug:** X axis label will overflow outside of chart boundary depending on chart size and view port size
+* **Bug:** ~~X axis label will overflow outside of chart boundary depending on chart size and view port size~~
 
 # On the roadmap
 - [ ] Add animation
-- [ ] Add option for interval tick length
+- [x] Add option for interval tick length
 - [ ] Add option for chart legend
 - [ ] Add auto color gradient selection
 
