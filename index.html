@@ -13,14 +13,14 @@
   <div id='demo' style='width: auto; height: 100vh; font-family: "Trebuchet MS", Helvetica, sans-serif'></div>
   <h2>Lorem ipsum</h2>
   <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
-  <div id='demo2' style='width: 100%; height: 700px; background-color: black; font-family: Arial, Helvetica, sans-serif;'></div>
+  <div id='demo2' style='width: 100%; height: 100vh; background-color: black; font-family: Arial, Helvetica, sans-serif;'></div>
   <h2>Lorem ipsum</h2>
   <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
   <script>
     $(document).ready(function () {drawBarChart([4, 5, 6, 7, 8, 9], {
       barColor: ['purple', 'blue', 'green', 'yellow', 'orange', 'red'],
       barLabel: ['four', 'five', 'six', 'seven', 'eight', 'nine'],
-      // barLabelPosition: 'top',
+      barLabelPosition: 'bottom',
       barStatPosition: 'center',
       // barLabelColor: 'bar',
       barStatColor: '#1c1c1c',
@@ -37,10 +37,10 @@
       barchartTitleSize: '50px',
       barchartTitleColor: '#b5b5b5',
       barchartTitleCss: {'margin': '15px'},
-      barchartWidth: '80%',
-      barchartHeight: '79%',
+      // barchartWidth: '80%',
+      // barchartHeight: '79%',
       barLabelPosition: 'top',
-      barStatPosition: 'bottom',
+      barStatPosition: 'none',
       barLabelColor: '#f5f5f5',
       barStatColor: ['purple', 'orange', 'green'],
       axisStyle: 'solid #b5b5b5',
@@ -52,7 +52,7 @@
       xLabelOffset: '-5px',
       yLabel: 'Cases (Aug 11 2020)',
       yLabelOffset: '10px',
-      tickInterval: 5000,
+      tickInterval: 20000,
       // chartHeight: 135000,
     },'#demo2')});
   </script>

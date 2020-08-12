@@ -66,6 +66,7 @@ function drawSubBars (data, id, parent, option) {
     subBarId = drawDiv(id + i, parent, {
     'width': '100%',
     'height': barPercent + '%',
+    'position': 'relative',
     'backgroundColor': () => {
       if (data.length === 1) {
         return 'transparent';
@@ -77,12 +78,7 @@ function drawSubBars (data, id, parent, option) {
     },
     });
     if (option.barStatPosition !== 'none') {
-      statId = drawDiv(id + '_stat_' + i, subBarId, {
-        'width': '100%',
-        // 'font-size': '30px',
-        'text-align': 'center',
-        'position': 'absolute',
-      }, data[i]);
+      statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition);
       switch (option.barStatColor) {
       case '':
       case undefined:
@@ -97,30 +93,45 @@ function drawSubBars (data, id, parent, option) {
       $(statId).css({
         'color': colorStat,
       });
-      switch (option.barStatPosition) {
-      case 'bottom':
-        $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px - 0.1em))',
-        });
-        break;
-      case 'center':
-        $(statId).css({
-          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
-        });
-        break;
-      default:
-        $(statId).css({
-          'transform': 'translate(0, -1.1em)',
-        });
-        break;
-      }
     }
   }
 }
+function drawLabel (id, parent, data, position, css) {
+  let dir, offset;
+  parent = drawDiv(id + '_label_anchor', parent, {
+    'width': '100%',
+    'height': '100%',
+    'position': 'absolute',
+  });
+  switch (position) {
+  case 'bottom':
+    dir = 'column-reverse';
+    offset = 'translate(0px, 1.2em)';
+    break;
+  case 'top':
+    offset = 'translate(0px, -1.1em)';
+  default:
+    dir = 'column';
+    break;
+  }
+  parent = drawDiv(id + '_label_container', parent, {
+    'width': '100%',
+    'height': '100%',
+    'display': 'flex',
+    'positon': 'absolute',
+    'text-align': 'center',
+    'flex-direction': dir,
+    'justify-content': position === 'center' ? 'center': 'flex-start',
+  });
+
+  return drawDiv(id + '_label', parent, typeof css === 'object' ? css: {
+    'transform': offset,
+  }, data);
+}
 function drawBars(data, option, element, interval, count) {
-  let scale, spacing = data.length, barHeight, barPercent;
+  let spacing = data.length, barHeight, barPercent;
   let colorBar = 'pink', colorLabel = 'black', colorStat = 'black';
-  let parentId, barParentId, barId, labelParentId, labelId, statId;
+  let parentId, barParentId, barId, labelId, statId;
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
   }
@@ -135,45 +146,33 @@ function drawBars(data, option, element, interval, count) {
     'align-items': 'flex-end',
     'justify-content': 'space-evenly',
   });
-  scale = parseInt($(parentId).css('height')) / count / interval;
 
   for (let i = 0; i < data.length; i++) {
-    barHeight = sumAll(data[i]) * scale;
-    // barPercent = sumAll(data[i]) * scale
+    barHeight = sumAll(data[i]) * parseInt($(parentId).css('height')) / count / interval;
+    barPercent = sumAll(data[i]) / (count * interval) * 100;
     if (option.barColor !== undefined && option.barColor[i] !== undefined) {
       colorBar = option.barColor[i];
     }
     barParentId = drawDiv(parentId + '_bar_container' + i, parentId, {
+      // 'backgroundColor': 'pink',
       'flex': '0 0 calc(100% / ' + spacing + ')',
       'height': '100%',
-      'backgroundColor': 'pink',
       'position': 'relative',
       'display': 'flex',
       'flex-direction': 'column-reverse',
     });
     barId = drawDiv(parentId + '_bar' + i, barParentId, {
-      'flex': '1 1 ' + barHeight + 'px',
+      'flex': '0 0 ' + barPercent + '%',
       'backgroundColor': colorBar,
       'z-index': '1',
       'position': 'relative',
       'display': 'flex',
       'flex-direction': 'column-reverse',
     });
-
     drawSubBars(data[i], barId + '_sub_', barId, option);
 
-    labelParentId = drawDiv(barId + '_label_container', barId, {
-      'width': '100%',
-      'height': '100%',
-      'position': 'absolute',
-    });
-    if (option.barLabel !== undefined && option.barLabel[i] !== undefined) {
-      labelId = drawDiv(barId + '_label', labelParentId, {
-        'width': '100%',
-        // 'font-size': '30px',
-        'text-align': 'center',
-        'position': 'absolute',
-      }, option.barLabel[i]);
+    if (option.barLabel !== undefined && option.barLabel[i] !== undefined && option.barLabelPosition !== 'none') {
+      labelId = drawLabel(barId, barId, option.barLabel[i], option.barLabelPosition);
       switch (option.barLabelColor) {
       case '':
       case undefined:
@@ -188,24 +187,6 @@ function drawBars(data, option, element, interval, count) {
       $(labelId).css({
         'color': colorLabel,
       });
-
-      switch (option.barLabelPosition) {
-      case 'top':
-        $(labelId).css({
-          'transform': 'translate(0, -1.1em)',
-        });
-        break;
-      case 'center':
-        $(labelId).css({
-          'transform': 'translate(0, calc(' + barHeight / 2 + 'px - 0.5em))',
-        });
-        break;
-      default:
-        $(labelId).css({
-          'transform': 'translate(0, calc(' + barHeight + 'px + 0.1em))',
-        });
-        break;
-      }
     }
   }
 }
@@ -246,7 +227,6 @@ function drawBarCanvas(data, option, element) {
   });
 
   for (let i = 0; i < count; i++) {
-    console.log(count);
     drawDiv(element + '_tick_' + i, tickParentId, {
       'width': '100%',
       // 'height': parseInt($(tickParentId).css('height')) / count + 'px',
@@ -267,7 +247,6 @@ function drawBarCanvas(data, option, element) {
     }, interval * (i + 1));
   }
   drawBars(data, option, element, interval, count);
-  // drawAxis(option, element);
 }
 function drawBarChart(data, option, element) {
   if (element[0] === '#') {
