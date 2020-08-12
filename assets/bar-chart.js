@@ -135,7 +135,7 @@ function drawBars(data, option, element, interval, count) {
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
   }
-  if (typeof option.barColor === 'string') {
+  if (typeof option.barColor === 'string' || typeof option.barColor === 'array' && option.barColor.length === 1) {
     colorBar = option.barColor;
   }
 
