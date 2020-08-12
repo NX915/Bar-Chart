@@ -78,7 +78,7 @@ function drawSubBars (data, id, parent, option) {
     },
     });
     if (option.barStatPosition !== 'none') {
-      statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition);
+      statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition === undefined ? 'top': option.barStatPosition);
       switch (option.barStatColor) {
       case '':
       case undefined:
@@ -171,8 +171,8 @@ function drawBars(data, option, element, interval, count) {
     });
     drawSubBars(data[i], barId + '_sub_', barId, option);
 
-    if (option.barLabel !== undefined && option.barLabel[i] !== undefined && option.barLabelPosition !== 'none') {
-      labelId = drawLabel(barId, barId, option.barLabel[i], option.barLabelPosition);
+    if (option.barLabel !== undefined && option.barLabelPosition !== 'none') {
+      labelId = drawLabel(barId, barId, option.barLabel[i], option.barLabelPosition === undefined ? 'bottom': option.barLabelPosition);
       switch (option.barLabelColor) {
       case '':
       case undefined:

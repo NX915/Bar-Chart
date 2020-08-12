@@ -29,10 +29,10 @@ barchartTitleCss:| **object**| *{'margin': '15px'}*
 barchartWidth:| **string**| *'80%'*
 barchartHeight:| **string**| *'83%'*
 barLabel:| **array of strings**| *['QC', 'ON', 'AB', 'BC', 'SK', 'NS']*
-barLabelPosition:| **string**| *'top' or 'center' default to bottom*
+barLabelPosition:| **string**| *'none', 'top', 'center' or 'bottom' default to bottom*
 barLabelColor:| **string**| *'#f5f5f5'*
 barStatColor:| **array of strings**| *['purple', 'orange', 'green']*
-barStatPosition:| **string**| *'none' or 'center' or 'bottom' default to top*
+barStatPosition:| **string**| *'none', 'top', 'center' or 'bottom' default to top*
 barSpacing:| **number**| *7*
 chartHeight:| **number**| *125000*
 tickInterval:| **number**| *5000*
