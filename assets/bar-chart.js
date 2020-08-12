@@ -118,9 +118,9 @@ function drawSubBars (data, id, parent, option) {
   }
 }
 function drawBars(data, option, element, interval, count) {
-  let scale, spacing = data.length, barHeight;
+  let scale, spacing = data.length, barHeight, barPercent;
   let colorBar = 'pink', colorLabel = 'black', colorStat = 'black';
-  let parentId, barId, labelParentId, labelId, statId;
+  let parentId, barParentId, barId, labelParentId, labelId, statId;
   if (option.barSpacing !== undefined) {
     spacing = data.length + option.barSpacing;
   }
@@ -139,12 +139,20 @@ function drawBars(data, option, element, interval, count) {
 
   for (let i = 0; i < data.length; i++) {
     barHeight = sumAll(data[i]) * scale;
+    // barPercent = sumAll(data[i]) * scale
     if (option.barColor !== undefined && option.barColor[i] !== undefined) {
       colorBar = option.barColor[i];
     }
-    barId = drawDiv(parentId + '_bar_' + i, parentId, {
+    barParentId = drawDiv(parentId + '_bar_container' + i, parentId, {
       'flex': '0 0 calc(100% / ' + spacing + ')',
-      'height': barHeight +'px',
+      'height': '100%',
+      'backgroundColor': 'pink',
+      'position': 'relative',
+      'display': 'flex',
+      'flex-direction': 'column-reverse',
+    });
+    barId = drawDiv(parentId + '_bar' + i, barParentId, {
+      'flex': '1 1 ' + barHeight + 'px',
       'backgroundColor': colorBar,
       'z-index': '1',
       'position': 'relative',
@@ -201,60 +209,6 @@ function drawBars(data, option, element, interval, count) {
     }
   }
 }
-function drawAxis(option, element) {
-  let xLabel = '', yLabel = '';
-  let axisParentId, yAxisId, xAxisId;
-  if (option.xLabel !== undefined) {
-    xLabel = option.xLabel;
-  }
-  if (option.yLabel !== undefined) {
-    yLabel = option.yLabel;
-  }
-
-  axisParentId = drawDiv(element + '_axis_container', element, {
-    'width': '100%',
-    'height': '100%',
-    'display':'flex',
-    'flex-direction': 'row',
-    'align-items': 'flex-end',
-  });
-  yAxisId = drawDiv(element + '_y_axis', axisParentId, {
-    'width': '0px',
-    'height': $(axisParentId).css('height'),
-    'position': 'absolute',
-    'display':'flex',
-    'flex-direction': 'column',
-    'justify-content': 'center',
-    'align-items': 'center',
-    'border-left': option.axisColor !== undefined ? 'solid ' + option.axisColor: 'solid black',
-  });
-  // drawDiv(yAxisId + '_label', yAxisId, {
-  //   // 'backgroundColor': 'pink',
-  //   // 'font-size': '25px',
-  //   'text-align': 'center',
-  //   'width': $(yAxisId).css('height'),
-  //   'transform': 'rotate(-90deg)',
-  //   'height': option.yLabelOffset !== undefined ? 'calc(' + option.yLabelOffset + ' + 8em)': '8em',
-  //   'color': option.axisColor !== undefined ? option.axisColor: 'black',
-  // }, option.yLabel);
-
-  xAxisId = drawDiv(element + '_x_axis', axisParentId, {
-    'width': '100%',
-    'height': '1%',
-    // 'backgroundColor': 'black',
-    'border-bottom': option.axisColor !== undefined ? 'solid ' + option.axisColor: 'solid black',
-    'display':'flex',
-    'flex-direction': 'row',
-    'z-index': '2',
-  });
-  // drawDiv(xAxisId + '_label', xAxisId, {
-  //   // 'backgroundColor': 'pink',
-  //   'text-align': 'center',
-  //   'width': '100%',
-  //   'transform': option.xLabelOffset !== undefined ? 'translate(0px, calc(' + option.xLabelOffset + ' + 1.5em))': 'translate(0px, 1.5em)',
-  //   'color': option.axisColor !== undefined ? option.axisColor: 'black',
-  // }, option.xLabel);
-}
 function drawBarCanvas(data, option, element) {
   let interval, count;
   let tickParentId, tickLabelParentId;
@@ -292,9 +246,11 @@ function drawBarCanvas(data, option, element) {
   });
 
   for (let i = 0; i < count; i++) {
+    console.log(count);
     drawDiv(element + '_tick_' + i, tickParentId, {
       'width': '100%',
-      'height': parseInt($(tickParentId).css('height')) / count + 'px',
+      // 'height': parseInt($(tickParentId).css('height')) / count + 'px',
+      'flex': '1 1 ' + 100 / count + '%',
       'border-top': option.tickStyle !== undefined ? option.tickStyle: 'thin dashed black',
       'display':'flex',
       'justify-content': 'flex-end',
@@ -302,8 +258,9 @@ function drawBarCanvas(data, option, element) {
     });
     drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
+      'flex': '1 1 ' + 100 / count + '%',
       'color': option.axisColor !== undefined ? option.axisColor: 'black',
-      'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
+      // 'height': parseInt($(tickLabelParentId).css('height')) / count + 'px',
       // 'backgroundColor': 'pink',
       'transform': 'translate(0, -0.5em)',
       'text-align': 'right',
