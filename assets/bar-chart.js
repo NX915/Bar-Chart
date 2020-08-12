@@ -314,7 +314,7 @@ function drawBarCanvas(data, option, element) {
 }
 function drawBarChart(data, option, element) {
   if (element[0] === '#') {
-    let barchartId = element.slice(1) + '_barchart_';
+    let barchartId = element.slice(1) + '_barchart';
     let width = '80%', height = '70%';
     let titleId;
 
