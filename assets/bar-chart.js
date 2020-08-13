@@ -77,11 +77,8 @@ function drawSubBars (data, id, parent, option) {
         }
       },
     });
-  $(subBarId).animate({
-    height: barPercent + '%',
-  }, 2000);
     if (option.barStatPosition !== 'none') {
-      statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition === undefined ? 'top': option.barStatPosition);
+      statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition === undefined ? 'top': option.barStatPosition, option);
       switch (option.barStatColor) {
       case '':
       case undefined:
@@ -97,10 +94,13 @@ function drawSubBars (data, id, parent, option) {
         'color': colorStat,
       });
     }
+    $(subBarId).animate({
+      height: barPercent + '%',
+    }, option.animationLength);
   }
 }
-function drawLabel (id, parent, data, position, css) {
-  let dir, offset;
+function drawLabel (id, parent, data, position, option, css) {
+  let dir, offset, labelId;
   parent = drawDiv(id + '_label_anchor', parent, {
     'width': '100%',
     'height': '100%',
@@ -127,9 +127,19 @@ function drawLabel (id, parent, data, position, css) {
     'justify-content': position === 'center' ? 'center': 'flex-start',
   });
 
-  return drawDiv(id + '_label', parent, typeof css === 'object' ? css: {
+
+  labelId = drawDiv(id + '_label', parent, typeof css === 'object' ? css: {
     'transform': offset,
+    // 'font-size': '0em',
+    'opacity': '0',
   }, data);
+  setTimeout(function () {
+    $(labelId).animate({
+      // fontSize: '1em',
+      opacity: '1',
+    }, option.animationLength / 2);
+  }, option.animationLength);
+  return labelId;
 }
 function drawBars(data, option, element, interval, count) {
   let spacing = data.length, barHeight, barPercent;
@@ -175,19 +185,10 @@ function drawBars(data, option, element, interval, count) {
       'display': 'flex',
       'flex-direction': 'column-reverse',
     });
-    if (typeof data[i] === 'number') {
-      $(barId).animate({
-        height: barPercent + '%',
-      }, 2000);
-    } else {
-      $(barId).css({
-        'height': barPercent + '%',
-      });
-    }
     drawSubBars(data[i], barId + '_sub_', barId, option);
 
     if (option.barLabel !== undefined && option.barLabelPosition !== 'none') {
-      labelId = drawLabel(barId, barId, option.barLabel[i], option.barLabelPosition === undefined ? 'bottom': option.barLabelPosition);
+      labelId = drawLabel(barId, barId, option.barLabel[i], option.barLabelPosition === undefined ? 'bottom': option.barLabelPosition, option);
       switch (option.barLabelColor) {
       case '':
       case undefined:
@@ -203,6 +204,9 @@ function drawBars(data, option, element, interval, count) {
         'color': colorLabel,
       });
     }
+    $(barId).animate({
+      height: barPercent + '%',
+    }, option.animationLength);
   }
 }
 function drawBarCanvas(data, option, element) {
@@ -275,6 +279,9 @@ function drawBarChart(data, option, element) {
     if (option.barchartHeight !== undefined) {
       height = option.barchartHeight;
     }
+    if (typeof option.animationLength !== 'number') {
+      option.animationLength = 0;
+    }
     $(element).css({
       'display': 'flex',
       'flex-direction': 'column',
@@ -287,7 +294,7 @@ function drawBarChart(data, option, element) {
         // 'backgroundColor': 'pink',
         'flex': '0 0 10%',
         'text-align': 'center',
-        'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '40px',
+        'font-size': () => option.barchartTitleSize !== undefined ? option.barchartTitleSize: '3em',
         'color': () => option.barchartTitleColor !== undefined ? option.barchartTitleColor: '',
         'margin-bottom': '0.5em',
       }, option.title);

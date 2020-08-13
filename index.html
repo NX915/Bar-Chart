@@ -20,7 +20,7 @@
   <div id='demo' style='width: auto; height: 100vh; max-height: 700px; font-family: "Trebuchet MS", Helvetica, sans-serif'></div>
   <h2>Lorem ipsum</h2>
   <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
-  <div id='demo2' style='width: 100%; height: 700px; font-family: Arial, Helvetica, sans-serif;'></div>
+  <div id='demo2' style='width: 100%; height: 700px; font-size: x-large; font-family: Arial, Helvetica, sans-serif;'></div>
   <h2>Lorem ipsum</h2>
   <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
   <script>
@@ -31,6 +31,7 @@
       barSpacing: 2,
       xLabel: 'X label',
       yLabel: 'Y label',
+      animationLength: 1000,
     },'#demo')});
     $(document).ready(function () {drawBarChart([[60627, 53041, 5696], [40161, 36381, 2786], [11687, 10384, 213], [4065, 3425, 195], [1450, 1265, 20], [1071, 1007, 64]], {
       barLabel: ['QC', 'ON', 'AB', 'BC', 'SK', 'NS'],
@@ -56,6 +57,7 @@
       yLabelOffset: '15px',
       tickInterval: 20000,
       chartHeight: 135000,
+      animationLength: 2000,
     },'#demo2')});
   </script>
 </body>
