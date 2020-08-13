@@ -135,7 +135,7 @@ function drawLabel (id, parent, data, position, option, css) {
   setTimeout(function () {
     $(labelId).animate({
       opacity: '1',
-    }, option.animationLength / 2);
+    }, option.animationLength / 4);
   }, option.animationLength);
   return labelId;
 }
@@ -255,7 +255,7 @@ function drawBarCanvas(data, option, element) {
     });
     $(tickId).animate({
       width: option.tickLength === undefined ? '100%': option.tickLength,
-    }, option.animationLength);
+    }, option.animationLength / 4);
     tickLabelId = drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
       'flex': '1 1 ' + 100 / count + '%',
@@ -268,7 +268,7 @@ function drawBarCanvas(data, option, element) {
     }, interval * (i + 1));
     $(tickLabelId).animate({
       opacity: '1',
-    }, option.animationLength);
+    }, option.animationLength / 4);
   }
   drawBars(data, option, element, interval, count);
 }
