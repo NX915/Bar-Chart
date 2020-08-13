@@ -49,7 +49,7 @@ yLabelOffset:| **string**| *'10px'*
 * **Bug:** ~~X axis label will overflow outside of chart boundary depending on chart size and view port size~~
 
 # On the roadmap
-- [ ] Add animation
+- [x] Add animation
 - [x] Add option for interval tick length
 - [ ] Add option for chart legend
 - [ ] Add auto color gradient selection
