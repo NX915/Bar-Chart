@@ -65,18 +65,21 @@ function drawSubBars (data, id, parent, option) {
     barPercent = data[i] / sumAll(data) * 100;
     subBarId = drawDiv(id + i, parent, {
     'width': '100%',
-    'height': barPercent + '%',
+    'height': '0%',
     'position': 'relative',
     'backgroundColor': () => {
-      if (data.length === 1) {
-        return 'transparent';
-      } else if (option.barColor !== undefined) {
-        return option.barColor[i];
-      } else {
-        return randomColor();
-      }
-    },
+        if (data.length === 1) {
+          return 'transparent';
+        } else if (option.barColor !== undefined) {
+          return option.barColor[i];
+        } else {
+          return randomColor();
+        }
+      },
     });
+  $(subBarId).animate({
+    height: barPercent + '%',
+  }, 2000);
     if (option.barStatPosition !== 'none') {
       statId = drawLabel(subBarId, subBarId, data[i], option.barStatPosition === undefined ? 'top': option.barStatPosition);
       switch (option.barStatColor) {
@@ -164,14 +167,23 @@ function drawBars(data, option, element, interval, count) {
       'display': 'flex',
       'flex-direction': 'column-reverse',
     });
+    console.log(typeof data[i]);
     barId = drawDiv(parentId + '_bar' + i, barParentId, {
-      'flex': '0 0 ' + barPercent + '%',
-      'backgroundColor': colorBar,
+      'backgroundColor': typeof data[i] === 'object' ? '': colorBar,
       'z-index': '1',
       'position': 'relative',
       'display': 'flex',
       'flex-direction': 'column-reverse',
     });
+    if (typeof data[i] === 'number') {
+      $(barId).animate({
+        height: barPercent + '%',
+      }, 2000);
+    } else {
+      $(barId).css({
+        'height': barPercent + '%',
+      });
+    }
     drawSubBars(data[i], barId + '_sub_', barId, option);
 
     if (option.barLabel !== undefined && option.barLabelPosition !== 'none') {
