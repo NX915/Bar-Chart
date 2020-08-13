@@ -254,8 +254,9 @@ function drawBarCanvas(data, option, element) {
       'z-index': '0',
     });
     $(tickId).animate({
-      width: option.tickLength === undefined ? '100%': option.tickLength,
-    }, option.animationLength / 4);
+      width: option.tickLength,
+    }, option.animationLength / (200 / parseInt(option.tickLength)));
+
     tickLabelId = drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
       'flex': '1 1 ' + 100 / count + '%',
@@ -286,6 +287,9 @@ function drawBarChart(data, option, element) {
     }
     if (typeof option.animationLength !== 'number') {
       option.animationLength = 0;
+    }
+    if (option.tickLength === undefined || typeof option.tickLength !== 'string') {
+      option.tickLength = '100%';
     }
     $(element).css({
       'display': 'flex',
