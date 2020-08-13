@@ -140,7 +140,7 @@ function drawLabel (id, parent, data, position, option, css) {
   return labelId;
 }
 function drawBars(data, option, element, interval, count) {
-  let spacing = data.length, barHeight, barPercent;
+  let spacing = data.length, barPercent;
   let colorBar = 'pink', colorLabel = '';
   let parentId, barParentId, barId, labelId;
   if (option.barSpacing !== undefined) {
@@ -209,7 +209,7 @@ function drawBars(data, option, element, interval, count) {
 }
 function drawBarCanvas(data, option, element) {
   let interval, count;
-  let tickParentId, tickLabelParentId;
+  let tickParentId, tickId, tickLabelParentId, tickLabelId;
   if (typeof option.tickInterval === 'number') {
     interval = option.tickInterval;
   } else {
@@ -244,8 +244,8 @@ function drawBarCanvas(data, option, element) {
   });
 
   for (let i = 0; i < count; i++) {
-    drawDiv(element + '_tick_' + i, tickParentId, {
-      'width': option.tickLength === undefined ? '100%': option.tickLength,
+    tickId = drawDiv(element + '_tick_' + i, tickParentId, {
+      'width': '0%',
       // 'height': parseInt($(tickParentId).css('height')) / count + 'px',
       'flex': '1 1 ' + 100 / count + '%',
       'border-top': option.tickStyle !== undefined ? option.tickStyle: 'thin dashed',
@@ -253,7 +253,10 @@ function drawBarCanvas(data, option, element) {
       'justify-content': 'flex-end',
       'z-index': '0',
     });
-    drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
+    $(tickId).animate({
+      width: option.tickLength === undefined ? '100%': option.tickLength,
+    }, option.animationLength);
+    tickLabelId = drawDiv(element + '_tick_label_' + i, tickLabelParentId, {
       'font-size': '12px',
       'flex': '1 1 ' + 100 / count + '%',
       'color': option.axisLabelColor !== undefined ? option.axisLabelColor: '',
@@ -261,7 +264,11 @@ function drawBarCanvas(data, option, element) {
       // 'backgroundColor': 'pink',
       'transform': 'translate(0, -0.5em)',
       'text-align': 'right',
+      'opacity': '0',
     }, interval * (i + 1));
+    $(tickLabelId).animate({
+      opacity: '1',
+    }, option.animationLength);
   }
   drawBars(data, option, element, interval, count);
 }
@@ -341,7 +348,10 @@ function drawBarChart(data, option, element) {
       'width': '10%',
       'height': '100%',
     });
-    drawBarCanvas(data, option, barchartId);
+    $(containerId).mouseenter(function() {
+      drawBarCanvas(data, option, barchartId);
+      $(containerId).off('mouseenter');
+    });
     drawDiv(barchartId + '_x_label_container', element, {
       // 'backgroundColor': 'orange',
       'width': '100%',
@@ -358,7 +368,6 @@ function drawBarChart(data, option, element) {
       'transform': option.xLabelOffset !== undefined ? 'translate(0px, ' + option.xLabelOffset + ')': '',
       'color': option.axisLabelColor !== undefined ? option.axisLabelColor: '',
     }, option.xLabel);
-
   } else {
     alert('Bar Chart Error! Parent ID not found.');
   }
