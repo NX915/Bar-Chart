@@ -130,12 +130,10 @@ function drawLabel (id, parent, data, position, option, css) {
 
   labelId = drawDiv(id + '_label', parent, typeof css === 'object' ? css: {
     'transform': offset,
-    // 'font-size': '0em',
     'opacity': '0',
   }, data);
   setTimeout(function () {
     $(labelId).animate({
-      // fontSize: '1em',
       opacity: '1',
     }, option.animationLength / 2);
   }, option.animationLength);

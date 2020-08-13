@@ -20,6 +20,7 @@ Currently there is only one API call to draw the bar chart, it is formated as fo
 # Options
 name | type | example
 --- | --- | ---
+animationLength| **number**| *1000* **default 0 (ms)**
 axisLabelColor:| **string**| *'#b5b5b5'*
 axisStyle:| **string**| *'solid #b5b5b5'* **CSS border format**
 barColor:| **array of strings**| *['#7d7d7d', '#b5b5b5', '#f5f5f5', 'green', 'blue', 'purple']*
