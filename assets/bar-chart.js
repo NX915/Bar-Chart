@@ -352,10 +352,14 @@ function drawBarChart(data, option, element) {
       'width': '10%',
       'height': '100%',
     });
-    $(containerId).mouseenter(function() {
+    if (option.hoverTrigger === true) {
+      $(containerId).mouseenter(function() {
+        drawBarCanvas(data, option, barchartId);
+        $(containerId).off('mouseenter');
+      });
+    } else {
       drawBarCanvas(data, option, barchartId);
-      $(containerId).off('mouseenter');
-    });
+    }
     drawDiv(barchartId + '_x_label_container', element, {
       // 'backgroundColor': 'orange',
       'width': '100%',

@@ -36,6 +36,7 @@ barStatColor:| **array of strings**| *['purple', 'orange', 'green']*
 barStatPosition:| **string**| *'none', 'top', 'center' or 'bottom'* **default to top**
 barSpacing:| **number**| *7*
 chartHeight:| **number**| *125000*
+hoverTrigger| **booleen**| *true* **default to false**
 tickInterval:| **number**| *5000*
 tickLength:| **string**| *'3%'* **must be percentage**
 tickStyle:| **string**| *'thin dotted #2e2e2e'* **CSS border format**
