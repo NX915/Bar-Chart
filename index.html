@@ -18,11 +18,10 @@
   <script src="assets/bar-chart.js"></script>
   <h1 style='text-align: center;'>Bar Chart Test Suite</h1>
   <div id='demo' style='width: auto; height: 100vh; max-height: 700px; font-family: "Trebuchet MS", Helvetica, sans-serif'></div>
-  <h2>Lorem ipsum</h2>
+  <h2>Customized Chart</h2>
   <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
-  <div id='demo2' style='width: 100%; height: 700px; font-size: x-large; font-family: Arial, Helvetica, sans-serif;'></div>
-  <h2>Lorem ipsum</h2>
-  <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tenetur praesentium eaque labore culpa ipsa adipisci beatae, doloremque illum sunt, voluptas ad vel mollitia quis delectus error cum? Sequi, alias soluta.</p>
+  <div id='demo2' style='width: 100%; height: 700px; font-size: x-large; font-family: Arial, Helvetica, sans-serif'></div>
+  <div id='demo3'style='height: 600px: font-size: 5em; text-align: center; margin-bottom: 1em;'>Show Chart</div>
   <script>
     $(document).ready(function () {drawBarChart([4, 5, 6, 7, 8, 9], {
       barColor: ['purple', 'blue', 'green', 'yellow', 'orange', 'red'],
@@ -33,7 +32,20 @@
       yLabel: 'Y label',
       animationLength: 1000,
     },'#demo')});
-    $(document).ready(function () {drawBarChart([[60627, 53041, 5696], [40161, 36381, 2786], [11687, 10384, 213], [4065, 3425, 195], [1450, 1265, 20], [1071, 1007, 64]], {
+    $(document).ready(function() {
+      let interval = setInterval(() => {
+        $('#demo3').animate({
+          fontSize: '6em',
+        }, 1000);
+        $('#demo3').animate({
+          fontSize: '5em',
+        }, 1000);
+      }, 2000);
+      $('#demo3').on('click', function() {clearInterval(interval);});
+    });
+    $('#demo3').on('click', function() {
+      $(this).html('');
+      setTimeout(drawBarChart([[60627, 53041, 5696], [40161, 36381, 2786], [11687, 10384, 213], [4065, 3425, 195], [1450, 1265, 20], [1071, 1007, 64]], {
       barLabel: ['QC', 'ON', 'AB', 'BC', 'SK', 'NS'],
       barColor: ['#7d7d7d', '#b5b5b5', '#f5f5f5', 'green', 'blue', 'purple'],
       // barchartTitleSize: '20px',
@@ -58,8 +70,9 @@
       tickInterval: 20000,
       chartHeight: 135000,
       animationLength: 2000,
-      hoverTrigger: true,
-    },'#demo2')});
+      // hoverTrigger: true,
+      },'#demo2'), 2000);
+    });
   </script>
 </body>
 </html>
